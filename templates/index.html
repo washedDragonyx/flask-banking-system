@@ -1,16 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ProgettoSDFlask</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+
     <!-- solo per yang! test locale "offline" -->
     <!-- <link href="/templates/styles.css" rel="stylesheet"> -->
-    
-    <link href="/static/styles/styles.css" rel="stylesheet"> 
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+
+    <link href="/static/styles/styles.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/styles.css') }}"
+    />
   </head>
   <body>
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>   -->
@@ -22,12 +31,13 @@
         textbox with button
      -->
     <div class="card">
-      
       <div class="card-top">
         <div class="card-form">
           <!-- <form method="GET" action="/api/account" class="form"> -->
-          <input type="text" id="input-id" class="input-id">
-          <button type="submit" onclick="getInput()" class="btn btn-primary">Invia</button>
+          <input type="text" id="input-id" class="input-id" />
+          <button type="submit" onclick="getInput()" class="btn btn-primary">
+            Invia
+          </button>
         </div>
       </div>
 
@@ -45,15 +55,15 @@
         </div> -->
         <table>
           <tr>
-            <th>ID Account: </th>
+            <th>ID Account:</th>
             <td><div class="acc-id" id="acc-id"></div></td>
           </tr>
           <tr>
-            <th>Saldo: </th>
+            <th>Saldo:</th>
             <td><div class="acc-balance" id="acc-balance"></div></td>
           </tr>
           <tr>
-            <th>Data di creazione: </th>
+            <th>Data di creazione:</th>
             <td><div class="acc-createdAt" id="acc-createdAt"></div></td>
           </tr>
           <tr>
@@ -69,16 +79,17 @@
     </div>
 
     <script>
-       function httpGet(theurl)
-      {
+      function httpGet(theurl) {
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", theurl, false ); // false for synchronous request
-        xmlHttp.send( null );
+        xmlHttp.open("GET", theurl, false); // false for synchronous request
+        xmlHttp.send(null);
         return xmlHttp.responseText;
       }
-      
+
       function getInput() {
-        var url = "http://127.0.0.1:5000/api/account/" + document.getElementById("input-id").value;
+        var url =
+          "http://127.0.0.1:5000/api/account/" +
+          document.getElementById("input-id").value;
         var content = httpGet(url);
         // console.log(content);
 
@@ -87,35 +98,32 @@
         console.log(parsed);
 
         var id = document.getElementById("acc-id");
-        var balance = document.getElementById("acc-balance")
-        var createdAt = document.getElementById("acc-createdAt")
-        var name = document.getElementById("acc-name")
-        var surname = document.getElementById("acc-surname")
+        var balance = document.getElementById("acc-balance");
+        var createdAt = document.getElementById("acc-createdAt");
+        var name = document.getElementById("acc-name");
+        var surname = document.getElementById("acc-surname");
 
-        id.innerHTML = ""
-        balance.innerHTML = ""
-        createdAt.innerHTML = ""
-        name.innerHTML = ""
-        surname.innerHTML = ""
+        id.innerHTML = "";
+        balance.innerHTML = "";
+        createdAt.innerHTML = "";
+        name.innerHTML = "";
+        surname.innerHTML = "";
 
-        var temp = document.createTextNode(parsed.AccountID)
-        id.appendChild(temp)
+        var temp = document.createTextNode(parsed.AccountID);
+        id.appendChild(temp);
 
-        temp = document.createTextNode(parsed.Balance)
-        balance.appendChild(temp)
+        temp = document.createTextNode(parsed.Balance);
+        balance.appendChild(temp);
 
-        temp = document.createTextNode(parsed.CreatedAt)
-        createdAt.appendChild(temp)
+        temp = document.createTextNode(parsed.CreatedAt);
+        createdAt.appendChild(temp);
 
-        temp = document.createTextNode(parsed.Name)
-        name.appendChild(temp)
+        temp = document.createTextNode(parsed.Name);
+        name.appendChild(temp);
 
-        temp = document.createTextNode(parsed.Surname)
-        surname.appendChild(temp)
+        temp = document.createTextNode(parsed.Surname);
+        surname.appendChild(temp);
       }
     </script>
   </body>
 </html>
-
-
-
