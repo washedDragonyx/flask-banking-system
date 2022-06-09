@@ -187,7 +187,7 @@ def account_id(account_id):
                 "Status": "Error "+str(e)
             }
 
-@app.route('/api/transfer', methods=('POST',))
+@app.route('/api/transfer', methods=('POST', 'GET'))
 def transfer_api():
     if request.method == 'POST':
         try:
@@ -257,6 +257,8 @@ def transfer_api():
             }
             return jsonify(data)
 
+    if request.method == 'GET':
+        return render_template('transfer.html')
 
 @app.route('/api/divert', methods=('POST',))
 def divert_api():
@@ -299,4 +301,4 @@ def divert_api():
 
 @app.route('/register')
 def register():
-    return render_template('/register.html')
+    return render_template('register.html')
