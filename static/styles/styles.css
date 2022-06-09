@@ -2,12 +2,14 @@
 
 * {
     font-family: "Epilogue", sans-serif;
+    transition: 0.2s ease;
 }
 
 :root {
     --almost-white: hsl(0, 0%, 98%);
     --box-shadow: 0px 1px 90px -50px rgb(22, 22, 69);
     --background-image: linear-gradient(hsl(273,75%,66%), hsl(240,73%,65%));
+    --background-image-lighter: linear-gradient(rgb(191, 146, 228), rgb(134, 134, 224));
 }
 
 body {
@@ -69,22 +71,35 @@ body {
 .card-bottom {
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     width: 100%;
     height: 80%;
     background-color: rgb(235, 235, 235, 50%);
     border-radius: 20px;
     border-top-left-radius: 0px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    justify-content: left;
+    padding: 20px;
     /* margin: 20px; */
 }
 
 .card-results {
     display: flex;
     align-items: center;
-    height: 80%;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
     /* border-radius: 20px; */
+    text-align: left;
+    flex-direction: column;
+    font-size: 13px;
+    padding: 20px;
 }
+.acc-row {
+    width: 100%;
+
+}
+
 
 button[type="submit"] {
     background-image: var(--background-image);
@@ -97,4 +112,17 @@ input[name="input-id"] {
     border: none;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 5px;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+.input-id {
+    margin-right: 20px!important;
+
+}
+
+button[type="submit"]:hover {
+    background-image: var(--background-image-lighter);
 }
