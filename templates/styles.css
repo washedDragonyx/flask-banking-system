@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@200;300;400;500;600;700&display=swap');
+
+* {
+    font-family: "Epilogue", sans-serif;
+}
+
+:root {
+    --almost-white: hsl(0, 0%, 98%);
+    --box-shadow: 0px 1px 90px -50px rgb(22, 22, 69);
+    --background-image: linear-gradient(hsl(273,75%,66%), hsl(240,73%,65%));
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    background-image: var(--background-image);
+    align-items: center;
+}
+
+.card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    width: 80%;
+    background-color: var(--almost-white);
+    /* border-radius: 25px; */
+    border: none;
+    box-shadow: var(--box-shadow);
+    flex-wrap: wrap;
+    padding: 50px;
+}
+
+.card-top {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 100%;
+    height: 15%;
+    /* margin-left: 15px; */
+}
+
+.form {
+    display: flex;
+    width: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+    justify-content: space-between;
+}
+
+.card-form {
+    display: flex;
+    align-items: center;
+    /* justify-content: left; */
+    height: 80%;
+    width: 305px;
+    background-color: rgb(235, 235, 235);
+    border-radius: 20px;
+}
+
+.card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 85%;
+    background-color: rgb(235, 235, 235);
+    border-radius: 20px;
+    /* margin: 20px; */
+}
+
+.card-results {
+    display: flex;
+    align-items: center;
+    height: 80%;
+    /* border-radius: 20px; */
+}
+
