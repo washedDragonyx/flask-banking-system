@@ -13,13 +13,15 @@
     rgb(191, 146, 228),
     rgb(134, 134, 224)
   );
+  --lightgrey: hsl(217, 12%, 63%);
 }
 
 body {
   height: 100vh;
   display: flex;
   justify-content: center;
-  background-image: var(--background-image);
+  background-color: rgb(230, 239, 246);
+
   align-items: center;
 }
 
@@ -28,8 +30,9 @@ body {
   justify-content: center;
   align-items: center;
   height: 80%;
-  width: 80%;
-  background-color: var(--almost-white);
+  width: 750px;
+  background-color: white;
+
   border-radius: 25px;
   border: none;
   box-shadow: var(--box-shadow);
@@ -41,12 +44,9 @@ body {
 .card-top {
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: center;
   width: 100%;
   height: 20%;
-  /* margin-top: 10px; */
-  /* margin-bottom: 30px; */
-  /* margin-left: 15px; */
 }
 
 .form {
@@ -60,31 +60,25 @@ body {
 .card-form {
   display: flex;
   align-items: center;
-  /* justify-content: left; */
-  /* height: 70px; */
+  flex-wrap: wrap;
   height: 100%;
   width: 305px;
-  /* background-color: rgb(235, 235, 235, 50%); */
   border-radius: 20px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+  font-size: 16px;
 }
 
 .card-bottom {
   display: flex;
   align-items: center;
-  /* justify-content: center; */
   width: 100%;
   height: 80%;
   background-color: rgb(235, 235, 235, 50%);
   border-radius: 20px;
-  border-top-left-radius: 0px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   justify-content: left;
   padding: 20px;
-  font-size: 14px;
-  /* margin: 20px; */
 }
 
 .card-results {
@@ -93,7 +87,6 @@ body {
   flex-wrap: wrap;
   height: 100%;
   width: 100%;
-  /* border-radius: 20px; */
   text-align: left;
   flex-direction: column;
   font-size: 10px;
@@ -104,14 +97,14 @@ body {
 }
 
 button[type="submit"] {
-  background-image: var(--background-image);
   outline: none;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 input[name="input-id"] {
   border: none;
+  width: 100%;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 5px;
 }
@@ -119,7 +112,11 @@ input[name="input-id"] {
 table,
 th,
 td {
-  /* border: 1px solid black; */
+  border: 1px 2solid black;
+}
+
+.bold {
+  font-weight: 700;
 }
 
 th {
@@ -131,19 +128,22 @@ th {
 }
 
 button[type="submit"]:hover {
-  background-image: var(--background-image-lighter);
 }
 
 .bottom-left {
   display: flex;
   height: 100%;
   width: 50%;
+  font-size: 14px;
 }
 
 .bottom-right {
   display: flex;
   height: 100%;
-  width: 50%;
+  width: 80%;
+  overflow: scroll;
+  justify-content: right;
+  font-size: 12px;
 }
 
 .tb-left {
@@ -152,4 +152,12 @@ button[type="submit"]:hover {
 
 .tb-right {
   height: fit-content;
+}
+
+td {
+  vertical-align: text-top;
+}
+
+.hide {
+  display: none;
 }
