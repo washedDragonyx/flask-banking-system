@@ -24,8 +24,8 @@ def account():
                 name = json_data['name']
                 surname = json_data['surname']
             else:
-                name = request.args.get('name')
-                surname = request.args.get('surname')
+                name = request.form['name']
+                surname = request.form['surname']
 
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
@@ -147,8 +147,8 @@ def account_id(account_id):
                 name = json_data['name']
                 surname = json_data['surname']
             else:
-                name = request.args.get('name')
-                surname = request.args.get('surname')
+                name = request.form['name']
+                surname = request.form['surname']
          
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
@@ -172,8 +172,8 @@ def account_id(account_id):
                 parameter = list(json_data.keys())[0]
                 value = json_data[str(parameter)]
             else:
-                parameter = str(list(request.args)[0])
-                value = request.args.get(str(parameter))
+                parameter = str(list(request.form)[0])
+                value = request.form[parameter]
 
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
@@ -197,7 +197,7 @@ def account_id(account_id):
                 json_data = request.get_json()
                 amount = json_data["amount"]
             else:
-                amount = request.args.get("amount")
+                amount = request.form["amount"]
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
             account = connection.execute('SELECT * FROM accounts WHERE account_id = ?', (account_id,)).fetchone()
@@ -295,9 +295,10 @@ def transfer_api():
                 receiver = json_data['to']
                 amount = json_data['amount']
             else:
-                sender = request.args.get('from')
-                receiver = request.args.get('to')
-                amount = request.args.get('amount')
+                sender = request.form['from']
+                receiver = request.form['to']
+                amount = request.form['amount']
+
 
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
@@ -374,7 +375,7 @@ def divert_api():
                 json_data = request.get_json()
                 transaction_id = json_data['id']
             else:
-                transaction_id = request.args.get('id')
+                transaction_id = request.form['id']
             connection = sqlite3.connect('transactions.db')
             connection.row_factory = sqlite3.Row
             transaction = connection.execute('SELECT * FROM transactions WHERE id = ?', (transaction_id,)).fetchone()
