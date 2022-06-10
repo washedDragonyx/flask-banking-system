@@ -42,43 +42,100 @@
       </div>
 
       <div class="card-bottom">
-        <!-- <div class="card-results">
-          <div class="acc-row acc-id">ID Account: 0xec2b36bf1389737f16</div>
-          <div class="acc-row acc-balance">Saldo: 66</div>
-          <div class="acc-row acc-createdAt">Data di creazione: 2022-06-09 15:38:30</div>
-          <div class="acc-row acc-name">Nome: Nikola</div>
-          <div class="acc-row acc-surname">Cognome: Zjacic</div>
-          
-          <div class="transactions">
-            
-          </div>
-        </div> -->
-        <table>
-          <tr>
-            <th>ID Account:</th>
-            <td><div class="acc-id" id="acc-id"></div></td>
-          </tr>
-          <tr>
-            <th>Saldo:</th>
-            <td><div class="acc-balance" id="acc-balance"></div></td>
-          </tr>
-          <tr>
-            <th>Data di creazione:</th>
-            <td><div class="acc-createdAt" id="acc-createdAt"></div></td>
-          </tr>
-          <tr>
-            <th>Nome</th>
-            <td><div class="acc-name" id="acc-name"></div></td>
-          </tr>
-          <tr>
-            <th>Cognome</th>
-            <td><div class="acc-surname" id="acc-surname"></div></td>
-          </tr>
-        </table>
+        <div class="bottom-left">
+          <table class="tb-left">
+            <tr>
+              <th>ID Account:</th>
+              <td><div class="acc-id" id="acc-id"></div></td>
+            </tr>
+            <tr>
+              <th>Saldo:</th>
+              <td><div class="acc-balance" id="acc-balance"></div></td>
+            </tr>
+            <tr>
+              <th>Data di creazione:</th>
+              <td><div class="acc-createdAt" id="acc-createdAt"></div></td>
+            </tr>
+            <tr>
+              <th>Nome:</th>
+              <td><div class="acc-name" id="acc-name"></div></td>
+            </tr>
+            <tr>
+              <th>Cognome:</th>
+              <td><div class="acc-surname" id="acc-surname"></div></td>
+            </tr>
+          </table>
+        </div>
+        <div class="bottom-right">
+          <table class="tb-right" id="transactions-table">
+
+          </table>
+        </div>
       </div>
     </div>
 
     <script>
+
+      function populate(trs) {
+        var table = document.getElementById("transactions-table");
+
+        var rowNode = document.createElement("tr");
+        var cellNode = document.createElement("td");
+        var cellNode2 = document.createElement("td");
+        var textNode = document.createTextNode("Transactions: ");
+
+        cellNode.appendChild(textNode);
+        rowNode.appendChild(cellNode);
+        table.appendChild(rowNode);
+
+        console.log(trs)
+
+        for(let i = 0; i < trs.length; i++) {
+          console.log(trs[i])
+
+          // rowNode.innerHTML = "";
+          // cellNode.innerHTML = "";
+          // cellNode2.innerHTML = "";
+          // textNode.innerHTML = "";
+
+          var rowNode = document.createElement("tr");
+          var cellNode = document.createElement("td");
+          var cellNode2 = document.createElement("td");
+          var divNode = document.createElement("div")
+          var divNode2 = document.createElement("div")
+          
+          textNode = document.createTextNode("Transaction n°" + i)
+          textNode2 = document.createTextNode("Amount: " + trs[i].amount)
+
+          divNode.appendChild(textNode2)
+          cellNode.appendChild(textNode); // <td> Transaction n°1 </td>
+          cellNode2.appendChild(divNode); // <td> Amount: 30 </td>
+          rowNode.appendChild(cellNode); // <tr> <td> Transaction n°1 </td> </tr>
+          rowNode.appendChild(cellNode2); // 
+
+          textNode2 = document.createTextNode("Destinatario: " + trs[i].receiver + "\n")
+
+          divNode2.appendChild(textNode2)
+          cellNode2.appendChild(divNode2);
+
+          console.log(rowNode)
+          table.appendChild(rowNode);
+
+          // rowNode.appendChild(cellNode);
+
+        }
+
+      }
+
+      // function resetNodes() {
+      //   rowNode.innerHTML = "";
+      //   cellNode.innerHTML = "";
+      //   cellNode
+      //   textNode.innerHTML = "";
+      //   rowNode = document.createElement("tr");
+      //   cellNode = document.createElement("td")
+      // }
+
       function httpGet(theurl) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", theurl, false); // false for synchronous request
@@ -123,6 +180,8 @@
 
         temp = document.createTextNode(parsed.Surname);
         surname.appendChild(temp);
+
+        populate(parsed.Transactions)
       }
     </script>
   </body>

@@ -83,6 +83,7 @@ body {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   justify-content: left;
   padding: 20px;
+  font-size: 14px;
   /* margin: 20px; */
 }
 
@@ -95,7 +96,7 @@ body {
   /* border-radius: 20px; */
   text-align: left;
   flex-direction: column;
-  font-size: 13px;
+  font-size: 10px;
   padding: 20px;
 }
 .acc-row {
@@ -118,7 +119,11 @@ input[name="input-id"] {
 table,
 th,
 td {
-  border: 1px solid black;
+  /* border: 1px solid black; */
+}
+
+th {
+  font-weight: 500;
 }
 
 .input-id {
@@ -127,4 +132,24 @@ td {
 
 button[type="submit"]:hover {
   background-image: var(--background-image-lighter);
+}
+
+.bottom-left {
+  display: flex;
+  height: 100%;
+  width: 50%;
+}
+
+.bottom-right {
+  display: flex;
+  height: 100%;
+  width: 50%;
+}
+
+.tb-left {
+  height: fit-content;
+}
+
+.tb-right {
+  height: fit-content;
 }
