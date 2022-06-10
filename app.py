@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, jsonify, Response
 import sqlite3
 import random
 import uuid
+import json
 
 
 app = Flask(__name__)
@@ -100,7 +101,7 @@ def account_id(account_id):
             
             connection = sqlite3.connect('transactions.db')
             connection.row_factory = sqlite3.Row
-            transactions = connection.execute('SELECT * FROM transactions WHERE sender = ?', (account_id,)).fetchall()
+            transactions = connection.execute('SELECT * FROM transactions WHERE sender = ? OR receiver = ?', (account_id,account_id,)).fetchall()
             if transactions != None:
 
                 json_obj = []
@@ -129,7 +130,8 @@ def account_id(account_id):
             data = {
                 "Status": "Error : "+str(e)
             }
-        return jsonify(data)
+        resp = Response(json.dumps(data), content_type='application/json', headers={'X-Sistema-Bancario': str(account[1])+";"+str(account[2])})
+        return resp
     
     if request.method == "PUT":
         try:
@@ -171,6 +173,78 @@ def account_id(account_id):
             }
             return jsonify(data)
     
+    if request.method == "POST":
+        try: 
+            amount= request.form["amount"]
+            connection = sqlite3.connect('accounts.db')
+            connection.row_factory = sqlite3.Row
+            account = connection.execute('SELECT * FROM accounts WHERE account_id = ?', (account_id,)).fetchone()
+            if account is None:
+                data = {
+                    "Status": "Account "+str(account_id)+" not found"
+                }
+                return jsonify(data)
+
+            if int(amount) >= 0:
+                connection.execute('UPDATE accounts SET balance = balance + ? WHERE account_id = ?', (amount, account[3],))
+                connection.commit()
+                connection.close()
+                connection = sqlite3.connect('transactions.db')
+                connection.row_factory = sqlite3.Row
+                transaction_id = str(uuid.uuid4())
+                connection.execute('INSERT INTO transactions (id, sender, receiver, amount) VALUES (?, ?, ?, ?)', (transaction_id ,"Anonymous", account[3], amount,))
+                connection.commit()
+                connection.close()
+                receiver_obj = {
+                "Name": account[1],
+                "Surname": account[2],
+                "Balance": account[4]
+                }
+                data = {
+                "Status": "Success",
+                "Sender" : "Anonymous",
+                "Receiver" : receiver_obj,
+                "TransactionID" : transaction_id,
+                "Amount" : amount
+                }
+
+                return jsonify(data)
+            else:
+                if int(amount) > int(account[4]):
+                    data = {
+                        "Status": "Error, insufficient funds"
+                    }
+                    return jsonify(data)
+                else:
+                    connection.execute('UPDATE accounts SET balance = balance - ? WHERE account_id = ?', (amount, account[3],))
+                    connection.commit()
+                    connection.close()
+                    connection = sqlite3.connect('transactions.db')
+                    connection.row_factory = sqlite3.Row
+                    transaction_id = str(uuid.uuid4())
+                    connection.execute('INSERT INTO transactions (id, sender, receiver, amount) VALUES (?, ?, ?, ?)', (transaction_id, account[3], "Withdrawal", amount,))
+                    connection.commit()
+                    connection.close()
+                    sender_obj = {
+                    "Name": account[1],
+                    "Surname": account[2],
+                    "Balance": account[4]
+                    }
+                    data = {
+                    "Status": "Success",
+                    "Sender" : sender_obj,
+                    "Receiver" : "Withdrawal",
+                    "TransactionID" : transaction_id,
+                    "Amount" : amount
+                    }
+
+                    return jsonify(data)
+        except Exception as e:
+            data = {
+                "Status": "Error "+str(e)
+            }
+            return jsonify(data)
+    
     if request.method == "HEAD":
         try: 
             connection = sqlite3.connect('accounts.db')
@@ -179,7 +253,8 @@ def account_id(account_id):
             connection.close()
             if account is None:
                 return Response(status=404)
-            resp = Response(headers={'name': str(account[1]), 'surname': str(account[2])})
+            resp = Response( content_type='application/json', headers={'X-Sistema-Bancario': str(account[1])+";"+str(account[2])})
+        
             
             return resp
         except Exception as e:
@@ -302,3 +377,8 @@ def divert_api():
 @app.route('/register')
 def register():
     return render_template('register.html')
+
+
+@app.route('/static/styles.css')
+def styles():
+    return render_template('/static/styles.css')
