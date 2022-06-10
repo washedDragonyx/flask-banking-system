@@ -19,8 +19,14 @@ def index():
 def account():
     if request.method == 'POST':
         try:
-            name = request.form['name']
-            surname = request.form['surname']
+            if (request.headers.get('Content-Type') == 'application/json'):
+                json_data = request.get_json()
+                name = json_data['name']
+                surname = json_data['surname']
+            else:
+                name = request.args.get('name')
+                surname = request.args.get('surname')
+
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
             number = random.randint(100000000000000000000,900000000000000000000)
@@ -136,9 +142,14 @@ def account_id(account_id):
     
     if request.method == "PUT":
         try:
-            
-            name = request.form['name']
-            surname = request.form['surname']
+            if (request.headers.get('Content-Type') == 'application/json'):
+                json_data = request.get_json()
+                name = json_data['name']
+                surname = json_data['surname']
+            else:
+                name = request.args.get('name')
+                surname = request.args.get('surname')
+         
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
             connection.execute('UPDATE accounts SET name = ?, surname = ? WHERE account_id = ?', (name, surname, account_id,))
@@ -156,8 +167,14 @@ def account_id(account_id):
     
     if request.method == "PATCH":
         try:
-            parameter = str(list(request.form)[0])
-            value = request.form[parameter]
+            if (request.headers.get('Content-Type') == 'application/json'):
+                json_data = request.get_json()
+                parameter = list(json_data.keys())[0]
+                value = json_data[str(parameter)]
+            else:
+                parameter = str(list(request.args)[0])
+                value = request.args.get(str(parameter))
+
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
             connection.execute('UPDATE accounts SET '+str(parameter)+' = ? WHERE account_id = ?', (value, account_id,))
@@ -176,7 +193,11 @@ def account_id(account_id):
     
     if request.method == "POST":
         try: 
-            amount= request.form["amount"]
+            if (request.headers.get('Content-Type') == 'application/json'):
+                json_data = request.get_json()
+                amount = json_data["amount"]
+            else:
+                amount = request.args.get("amount")
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
             account = connection.execute('SELECT * FROM accounts WHERE account_id = ?', (account_id,)).fetchone()
@@ -267,9 +288,17 @@ def account_id(account_id):
 def transfer_api():
     if request.method == 'POST':
         try:
-            sender = request.form['from']
-            receiver = request.form['to']
-            amount = request.form['amount']
+           
+            if (request.headers.get('Content-Type') == 'application/json'):
+                json_data = request.get_json()
+                sender = json_data['from']
+                receiver = json_data['to']
+                amount = json_data['amount']
+            else:
+                sender = request.args.get('from')
+                receiver = request.args.get('to')
+                amount = request.args.get('amount')
+
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
             sender_account = connection.execute('SELECT * FROM accounts WHERE account_id = ?', (sender,)).fetchone()
@@ -340,7 +369,12 @@ def transfer_api():
 def divert_api():
     if request.method == 'POST':
         try:
-            transaction_id = request.form['id']
+           
+            if (request.headers.get('Content-Type') == 'application/json'):
+                json_data = request.get_json()
+                transaction_id = json_data['id']
+            else:
+                transaction_id = request.args.get('id')
             connection = sqlite3.connect('transactions.db')
             connection.row_factory = sqlite3.Row
             transaction = connection.execute('SELECT * FROM transactions WHERE id = ?', (transaction_id,)).fetchone()
