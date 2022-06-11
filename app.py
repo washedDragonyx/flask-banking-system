@@ -42,7 +42,8 @@ def account():
             }
         except Exception as e:
             data = {
-                "Status": "Error "+str(e)
+                "Status": "Failure",
+                "Error": str(e)
             }
   
         return jsonify(data)
@@ -69,12 +70,19 @@ def account():
             }
         except Exception as e:
             data = {
-                "Status": "Error "+str(e)
+                "Status": "Failure",
+                "Error": str(e)
             }
+  
         return jsonify(data)
 
 @app.route('/api/account/<account_id>', methods=('GET', 'DELETE', 'PUT', 'PATCH' ,'POST' , 'HEAD'))
 def account_id(account_id):
+    if not check_account_format([account_id]):
+        return jsonify({
+            "Status": "Failure",
+            "Error": "Account id is not in correct format"
+        })
     if request.method == 'DELETE':
         try:
             connection = sqlite3.connect('accounts.db')
@@ -88,8 +96,10 @@ def account_id(account_id):
             }
         except Exception as e:
             data = {
-                "Status": "Error "+str(e)
+                "Status": "Failure",
+                "Error": str(e)
             }
+  
         return jsonify(data) 
     
     if request.method == "GET" :
@@ -135,8 +145,10 @@ def account_id(account_id):
             }
         except Exception as e:
             data = {
-                "Status": "Error : "+str(e)
+                "Status": "Failure",
+                "Error": str(e)
             }
+  
         resp = Response(json.dumps(data), content_type='application/json', headers={'X-Sistema-Bancario': str(account[1])+";"+str(account[2])})
         return resp
     
@@ -161,8 +173,10 @@ def account_id(account_id):
             return jsonify(data)
         except Exception as e:
             data = {
-                "Status": "Error "+str(e)
+                "Status": "Failure",
+                "Error": str(e)
             }
+  
             return jsonify(data)
     
     if request.method == "PATCH":
@@ -187,8 +201,10 @@ def account_id(account_id):
             
         except Exception as e:
             data = {
-                "Status": "Error "+str(e)
+                "Status": "Failure",
+                "Error": str(e)
             }
+  
             return jsonify(data)
     
     if request.method == "POST":
@@ -203,8 +219,10 @@ def account_id(account_id):
             account = connection.execute('SELECT * FROM accounts WHERE account_id = ?', (account_id,)).fetchone()
             if account is None:
                 data = {
-                    "Status": "Account "+str(account_id)+" not found"
+                    "Status":"Failure",
+                    "Error": "Account "+str(account_id)+" not found"
                 }
+                
                 return jsonify(data)
 
             if int(amount) >= 0:
@@ -234,7 +252,8 @@ def account_id(account_id):
             else:
                 if int(amount) > int(account[4]):
                     data = {
-                        "Status": "Error, insufficient funds"
+                        "Status": "Failure",
+                        "Error": "Insufficient funds"
                     }
                     return jsonify(data)
                 else:
@@ -263,8 +282,10 @@ def account_id(account_id):
                     return jsonify(data)
         except Exception as e:
             data = {
-                "Status": "Error "+str(e)
+                "Status": "Failure",
+                "Error": str(e)
             }
+  
             return jsonify(data)
     
     if request.method == "HEAD":
@@ -281,8 +302,10 @@ def account_id(account_id):
             return resp
         except Exception as e:
             data = {
-                "Status": "Error "+str(e)
+                "Status": "Failure",
+                "Error": str(e)
             }
+  
 
 @app.route('/api/transfer', methods=('POST', 'GET'))
 def transfer_api():
@@ -299,7 +322,11 @@ def transfer_api():
                 receiver = request.form['to']
                 amount = request.form['amount']
 
-
+            if not check_account_format([receiver, sender]):
+                return jsonify({
+                    "Status": "Failure",
+                    "Error": "Account id is not in correct format"
+                })
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
             sender_account = connection.execute('SELECT * FROM accounts WHERE account_id = ?', (sender,)).fetchone()
@@ -307,22 +334,26 @@ def transfer_api():
             connection.close()
             if sender_account is None:
                 data = {
-                    "Status": "Sender account "+str(sender)+" not found"
+                    "Status":"Failure",
+                    "Error": "Sender account "+str(sender)+" not found"
                 }
                 return jsonify(data)
             if receiver_account is None:
                 data = {
-                    "Status": "Receiver account "+str(receiver)+" not found"
+                    "Status":"Failure",
+                    "Error": "Receiver account "+str(receiver)+" not found"
                 }
                 return jsonify(data)
             if int(amount) > int(sender_account[4]):
                 data = {
-                    "Status": "Insufficient funds"
+                    "Status":"Failure",
+                    "Error": "Insufficient funds"
                 }
                 return jsonify(data)
             if sender == receiver:
                 data = {
-                    "Status": "Sender and receiver cannot be the same"
+                    "Status":"Failure",
+                    "Error": "Sender and receiver cannot be the same"
                 }
                 return jsonify(data)
             connection = sqlite3.connect('accounts.db')
@@ -359,7 +390,8 @@ def transfer_api():
             return jsonify(data)
         except Exception as e:
             data = {
-                "Status": "Error "+str(e)
+                "Status":"Failure",
+                "Error": str(e)
             }
             return jsonify(data)
 
@@ -382,7 +414,8 @@ def divert_api():
             connection.close()
             if transaction is None:
                 data = {
-                    "Status": "Transaction "+str(transaction_id)+" not found"
+                    "Status":"Failure",
+                    "Error": "Transaction "+str(transaction_id)+" not found"
                 }
                 return jsonify(data)
             sender = transaction[2]
@@ -406,7 +439,8 @@ def divert_api():
             return jsonify(data)
         except Exception as e:
             data = {
-                "Status": "Error "+str(e)
+                "Status":"Failure",
+                "Error": str(e)
             }
             return jsonify(data)
 
@@ -418,3 +452,13 @@ def register():
 @app.route('/static/styles.css')
 def styles():
     return render_template('/static/styles.css')
+
+
+
+
+def check_account_format(accounts):
+    for account in accounts: 
+        if len(account) != 20:
+            return False
+        else:
+            return True
