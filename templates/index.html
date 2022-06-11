@@ -22,6 +22,7 @@
     <div class="card">
       <div class="card-top">
         <div class="card-form">
+          <div class="header">Inserisci l'ID nel campo sottostante</div>
           <input type="text" id="input-id" class="input-id" />
           <button
             type="submit"
@@ -29,8 +30,9 @@
             class="btn btn-primary"
             id="button"
           >
-            Invia
+            Cerca
           </button>
+          <div class="error op0" id="error">-------------</div>
         </div>
       </div>
 
@@ -70,17 +72,35 @@
         var tb_left = document.getElementById("tb-left");
         tb_left.classList.remove("hide");
       }
-      function populate(trs) {
+      function checkTipologiaTX(tx) {
+        var input = document.getElementById("input-id").value
+        var receiver = tx.receiver
+        var ammontare = tx.amount
+        // ammontare < 0 e id uguale -> uscita (prelievo)
+        // ammontare < 0 e id diverso -> uscita
+        // ammontare > 0 e id diverso -> uscita
+        console.log("my id: " + input + ", " + "destinatario: " + receiver)
+        if(input != receiver) {
+          return "trasferimento"
+        }
+        if(input == receiver && ammontare < 0) {
+          return "uscita (prelievo)"
+        }
+        if(input == receiver && ammontare > 0) {
+          return "entrata (versamento)"
+        }
+      }
+      function populate(tx, input) {
         var table = document.getElementById("transactions-table");
 
         var rowNode = document.createElement("tr");
         var cellNode = document.createElement("td");
         var cellNode2 = document.createElement("td");
 
-        console.log(trs);
+        console.log(tx);
 
-        for (let i = 0; i < trs.length; i++) {
-          console.log(trs[i]);
+        for (let i = 0; i < tx.length; i++) {
+          console.log(tx[i]);
 
           var rowNode = document.createElement("tr");
           if (i == 0) rowNode.classList.add("bold");
@@ -91,24 +111,40 @@
           cellNode.appendChild(temp);
           rowNode.appendChild(cellNode);
 
-          var quantità = document.createElement("div");
-          temp = document.createTextNode("Quantità: " + trs[i].amount);
-          quantità.appendChild(temp);
-          cellNode2.appendChild(quantità);
+          var tipologia = document.createElement("div")
+          temp = document.createTextNode("Tipologia: " + checkTipologiaTX(tx[i]))
+          tipologia.appendChild(temp);
+          cellNode2.appendChild(tipologia);
           rowNode.appendChild(cellNode2);
 
-          var destinatario = document.createElement("div");
-          temp = document.createTextNode("Destinatario: " + trs[i].receiver);
-          destinatario.appendChild(temp);
-          cellNode2.appendChild(destinatario);
+          var ammontare = document.createElement("div");
+          temp = document.createTextNode("Ammontare: " + tx[i].amount);
+          ammontare.appendChild(temp);
+          cellNode2.appendChild(ammontare);
+          rowNode.appendChild(cellNode2);
+
+          if(tx[i].receiver != input) {
+            var destinatario = document.createElement("div");
+            temp = document.createTextNode("Destinatario: " + tx[i].receiver);
+            destinatario.appendChild(temp);
+            cellNode2.appendChild(destinatario);
+
+            var mittente = document.createElement("div");
+            if(tx[i].sender == input)
+              temp = document.createTextNode("Mittente: " + tx[i].sender + " (Io)");
+            else
+              temp = document.createTextNode("Mittente: " + tx[i].sender)
+            mittente.appendChild(temp);
+            cellNode2.appendChild(mittente);
+          }
 
           var id = document.createElement("div");
-          temp = document.createTextNode("Id: " + trs[i].id);
+          temp = document.createTextNode("Id: " + tx[i].id);
           id.appendChild(temp);
           cellNode2.appendChild(id);
 
           var data = document.createElement("div");
-          temp = document.createTextNode("Data: " + trs[i].timestamp);
+          temp = document.createTextNode("Data: " + tx[i].timestamp);
           data.appendChild(temp);
           cellNode2.appendChild(data);
 
@@ -123,46 +159,50 @@
         return xmlHttp.responseText;
       }
       function getInput() {
-        show();
-        reset();
-        var url =
-          "http://127.0.0.1:5000/api/account/" +
-          document.getElementById("input-id").value;
-        var content = httpGet(url);
-        // console.log(content);
+        if(checkLength()) {
+          show();
+          reset();
+          var input = document.getElementById("input-id").value;
+          var url =
+            "http://127.0.0.1:5000/api/account/" + input;
+          var content = httpGet(url);
 
-        var parsed = JSON.parse(content);
+          var parsed = JSON.parse(content);
 
-        console.log(parsed);
+          console.log(parsed);
 
-        var id = document.getElementById("acc-id");
-        var balance = document.getElementById("acc-balance");
-        var createdAt = document.getElementById("acc-createdAt");
-        var name = document.getElementById("acc-name");
-        var surname = document.getElementById("acc-surname");
+          var id = document.getElementById("acc-id");
+          var balance = document.getElementById("acc-balance");
+          var createdAt = document.getElementById("acc-createdAt");
+          var name = document.getElementById("acc-name");
+          var surname = document.getElementById("acc-surname");
 
-        id.innerHTML = "";
-        balance.innerHTML = "";
-        createdAt.innerHTML = "";
-        name.innerHTML = "";
-        surname.innerHTML = "";
+          id.innerHTML = "";
+          balance.innerHTML = "";
+          createdAt.innerHTML = "";
+          name.innerHTML = "";
+          surname.innerHTML = "";
 
-        var temp = document.createTextNode(parsed.AccountID);
-        id.appendChild(temp);
+          var temp = document.createTextNode(parsed.AccountID);
+          id.appendChild(temp);
 
-        temp = document.createTextNode(parsed.Balance);
-        balance.appendChild(temp);
+          temp = document.createTextNode(parsed.Balance);
+          balance.appendChild(temp);
 
-        temp = document.createTextNode(parsed.CreatedAt);
-        createdAt.appendChild(temp);
+          temp = document.createTextNode(parsed.CreatedAt);
+          createdAt.appendChild(temp);
 
-        temp = document.createTextNode(parsed.Name);
-        name.appendChild(temp);
+          temp = document.createTextNode(parsed.Name);
+          name.appendChild(temp);
 
-        temp = document.createTextNode(parsed.Surname);
-        surname.appendChild(temp);
+          temp = document.createTextNode(parsed.Surname);
+          surname.appendChild(temp);
 
-        populate(parsed.Transactions);
+          populate(parsed.Transactions, input);
+        }
+        else {
+
+        }
       }
       function reset() {
         var transactions_table = document.getElementById("transactions-table");
@@ -176,6 +216,30 @@
             document.getElementById("button").click();
           }
         });
+      }
+      function checkLength() {
+        var input = document.getElementById("input-id")
+        if(input.value.length != 20) {
+          input.classList.add("border-red")
+          showError("L'id inserito non è accettato (lunghezza 20 caratteri)")
+          return false
+        }
+        else {
+          input.classList.remove("border-red")
+          hideError()
+          return true
+        }
+      }
+      function showError(error) {
+        var err_box = document.getElementById("error")
+        console.log(error)
+        err_box.innerHTML = error
+        err_box.classList.remove("op0")
+      }
+      function hideError() {
+        var err_box = document.getElementById("error")
+        err_box.innerHTML = "-------------"
+        err_box.classList.add("op0")
       }
       setEnter();
     </script>
