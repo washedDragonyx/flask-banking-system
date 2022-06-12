@@ -15,7 +15,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/api/account', methods=('GET', 'POST'))
+@app.route('/api/account', methods=('GET', 'POST','DELETE'))
 def account():
     if request.method == 'POST':
         try:
@@ -75,16 +75,26 @@ def account():
             }
   
         return jsonify(data)
-
-@app.route('/api/account/<account_id>', methods=('GET', 'DELETE', 'PUT', 'PATCH' ,'POST' , 'HEAD'))
-def account_id(account_id):
-    if not check_account_format([account_id]):
-        return jsonify({
-            "Status": "Failure",
-            "Error": "Account id is not in correct format"
-        })
+    
     if request.method == 'DELETE':
         try:
+            account_id = request.args['id']
+            
+            if not check_account_format([account_id]):
+                return jsonify({
+            "Status": "Failure",
+            "Error": "Account id is not in correct format"
+                })
+            connection = sqlite3.connect('accounts.db')
+            connection.row_factory = sqlite3.Row
+            account = connection.execute('SELECT * FROM accounts WHERE account_id = ?', (account_id,)).fetchone()
+            connection.close()
+            if account is None:
+                data = {
+                    "Status": "Failure",
+                    "Error": "Account "+str(account_id)+" not found"
+                }
+                return jsonify(data)    
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
             
@@ -101,6 +111,15 @@ def account_id(account_id):
             }
   
         return jsonify(data) 
+
+@app.route('/api/account/<account_id>', methods=('GET', 'PUT', 'PATCH' ,'POST' , 'HEAD'))
+def account_id(account_id):
+    if not check_account_format([account_id]):
+        return jsonify({
+            "Status": "Failure",
+            "Error": "Account id is not in correct format"
+        })
+    
     
     if request.method == "GET" :
         try:
@@ -226,7 +245,7 @@ def account_id(account_id):
                 }
                 
                 return jsonify(data)
-
+            print(amount)
             if int(amount) >= 0:
                 connection.execute('UPDATE accounts SET balance = balance + ? WHERE account_id = ?', (amount, account[3],))
                 connection.commit()
@@ -252,6 +271,8 @@ def account_id(account_id):
 
                 return jsonify(data)
             else:
+                print("ENTERING ELSE")
+                amount = int(amount)*-1
                 if int(amount) > int(account[4]):
                     data = {
                         "Status": "Failure",
