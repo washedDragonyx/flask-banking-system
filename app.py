@@ -110,7 +110,8 @@ def account_id(account_id):
             connection.close()
             if account is None:
                 data = {
-                    "Status": "Account "+str(account_id)+" not found"
+                    "Status": "Failure",
+                    "Error": "Account "+str(account_id)+" not found"
                 }
                 return jsonify(data)
 
@@ -136,6 +137,7 @@ def account_id(account_id):
             
 
             data = {
+                "Status":"Success",
                 "Name": account[1],
                 "Surname": account[2],
                 "AccountID": account[3],
