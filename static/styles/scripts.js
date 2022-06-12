@@ -18,11 +18,12 @@ function checkTipologiaTX(tx) {
   var ammontare = tx.amount;
 
   console.log("my id: " + input + ", " + "destinatario: " + receiver);
+  if (receiver == "Withdrawal")
+  {
+    return "uscita (prelievo)"
+  }
   if (input != receiver) {
     return "trasferimento";
-  }
-  if (input == receiver && ammontare < 0) {
-    return "uscita (prelievo)";
   }
   if (input == receiver && ammontare > 0) {
     return "entrata (versamento)";
@@ -62,21 +63,20 @@ function populate(tx, input) {
     rowNode.appendChild(cellNode2);
 
     var ammontare = document.createElement("div");
-    temp = document.createTextNode("Ammontare: " + tx[i].amount);
+    temp = document.createTextNode("Ammontare: " + Math.abs(tx[i].amount));
     ammontare.appendChild(temp);
     cellNode2.appendChild(ammontare);
     rowNode.appendChild(cellNode2);
 
     if (tx[i].receiver != input) {
-      var destinatario = document.createElement("div");
-      temp = document.createTextNode("Destinatario: " + tx[i].receiver);
-      destinatario.appendChild(temp);
-      cellNode2.appendChild(destinatario);
-
+      if(!tx[i].receiver == "Withdrawal") {
+        var destinatario = document.createElement("div");
+        temp = document.createTextNode("Destinatario: " + tx[i].receiver);
+        destinatario.appendChild(temp);
+        cellNode2.appendChild(destinatario);
+      }
       var mittente = document.createElement("div");
-      if (tx[i].sender == input)
-        temp = document.createTextNode("Mittente: " + tx[i].sender + " (Io)");
-      else temp = document.createTextNode("Mittente: " + tx[i].sender);
+      temp = document.createTextNode("Mittente: " + tx[i].sender);
       mittente.appendChild(temp);
       cellNode2.appendChild(mittente);
     }
@@ -96,7 +96,7 @@ function populate(tx, input) {
   }
 }
 
-//Funzione che permette di recuperare dati da un sito dato l'URL
+// Funzione che permette di recuperare dati da un sito dato l'URL
 function httpGet(url) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open("GET", url, false); // false for synchronous request
@@ -104,6 +104,7 @@ function httpGet(url) {
   return xmlHttp.responseText;
 }
 
+// Funzione che invia un array di tre dati (mittente, destinatario, ammontare) ad un url
 function httpPost(url, arr) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open("POST", url, true);
@@ -113,6 +114,7 @@ function httpPost(url, arr) {
     to: arr[1],
     amount: arr[2]
   }));
+  return xmlHttp.responseText;
 }
 
 // Chiamato dal pulsante "Cerca", utilizza l'ID inserito per ottenere tutti i dati del
@@ -233,8 +235,10 @@ function sendTransfer() {
     document.getElementById("input-id-receiver").value,
     document.getElementById("input-amount").value
   ]
-  httpPost("http://127.0.0.1:5000/api/transfer", arr)
-  console.log("POST eseguito")
+  // if(httpPost("http://127.0.0.1:5000/api/transfer", arr).Status)
+  var content = httpPost("http://127.0.0.1:5000/api/transfer", arr);
+  var parsed = JSON.parse(content);
+  console.log(content);
 }
 
 if (getPageName() == "") setEnter();
