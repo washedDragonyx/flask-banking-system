@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Transfer</title>
+    <title>ProgettoSDFLask - Transfer</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -29,7 +29,9 @@
             <div class="error op0" id="error-sender">-------------</div>
 
             <div class="header header-tr">ID Destinatario</div>
-            <input type="text" id="input-id-receiver" class="input-id input-id-receiver" />
+            <input type="text" id="input-id-receiver" class="input-id input-id-receiver"
+                onkeyup="checkLength('input-id-receiver', 'error-receiver')"    
+            />
             <div class="error op0" id="error-receiver">-------------</div>
 
             <div class="header header-tr">Ammontare</div>

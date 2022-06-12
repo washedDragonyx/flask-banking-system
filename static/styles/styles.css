@@ -198,3 +198,13 @@ td {
 .input-id-sender, .input-id-receiver {
   margin: 0!important;
 }
+
+.input-amount {
+  text-align: center;
+}
+
+.card-tr {
+  height: fit-content;
+  width: fit-content;
+}
+
