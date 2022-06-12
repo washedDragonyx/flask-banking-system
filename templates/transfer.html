@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Transfer</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link href="/static/styles/styles.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/styles.css') }}"
+    />
 </head>
 <body>
-    ue
+    <div class="card card-tr">
+        <div class="card-top card-top-tr">
+          <div class="card-form card-form-tr">
+
+            <div class="header header-tr">ID Mittente</div>
+            <input type="text" id="input-id-sender" class="input-id input-id-sender" 
+                onkeyup="checkLength('input-id-sender', 'error-sender')"
+            />
+            <div class="error op0" id="error-sender">-------------</div>
+
+            <div class="header header-tr">ID Destinatario</div>
+            <input type="text" id="input-id-receiver" class="input-id input-id-receiver" />
+            <div class="error op0" id="error-receiver">-------------</div>
+
+            <div class="header header-tr">Ammontare</div>
+            <input type="text" id="input-amount" class="input-amount" />
+            <div class="error op0" id="error-amount">-------------</div>
+
+            <button 
+                type="submit"
+                onclick="sendTransfer()"
+                class="btn btn-primary"
+                id="button">
+            Invia
+            </button>
+          </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static',filename='styles/scripts.js') }}"></script>
 </body>
 </html>

@@ -448,6 +448,9 @@ def divert_api():
 def register():
     return render_template('register.html')
 
+@app.route('/transfer')
+def transfer():
+    return render_template('transfer.html')
 
 @app.route('/static/styles.css')
 def styles():

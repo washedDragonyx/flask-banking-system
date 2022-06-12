@@ -182,3 +182,19 @@ td {
   opacity: 0;
 }
 
+/* transfer */
+
+.card-top-tr {
+  height: fit-content;
+}
+
+.header-tr {
+  width: 100%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.input-id-sender, .input-id-receiver {
+  margin: 0!important;
+}
