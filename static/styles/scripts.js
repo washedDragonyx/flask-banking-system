@@ -311,12 +311,14 @@ function sendTransfer() {
 }
 
 function checkPositive(input_id, notice_id) {
-  var input = document.getElementById(input_id).value
-  if(input > 0){
+  var input = document.getElementById(input_id)
+  if(input.value > 0){
+    input.classList.remove("border-red");
     hideNotice(notice_id)
     return true}
   else
   {
+    input.classList.add("border-red");
     showNotice(
       "❗The amount must be higher than zero❗",
       notice_id,
