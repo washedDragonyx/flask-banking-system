@@ -18,7 +18,12 @@
     />
   </head>
   <body>
-    <div class="card">
+    <div class="card" 
+      data-tilt 
+      data-tilt-reverse="false"
+      data-tilt-speed="100"
+      data-tilt-perspective="2000"
+      data-tilt-max="10">
       <div class="card-top">
         <div class="card-form">
           <div class="title">Account Search 👤🔍</div>
@@ -68,5 +73,6 @@
     </div>
 
     <script src="{{ url_for('static',filename='styles/scripts.js') }}"></script>
+    <script src="{{ url_for('static',filename='styles/vanilla-tilt.min.js') }}"></script>
   </body>
 </html>

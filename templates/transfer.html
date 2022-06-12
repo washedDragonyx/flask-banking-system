@@ -18,7 +18,12 @@
     />
   </head>
   <body>
-    <div class="flip-card" id="flip-card">
+    <div class="flip-card" id="flip-card"
+        data-tilt 
+        data-tilt-reverse="false"
+        data-tilt-speed="100"
+        data-tilt-perspective="2000"
+        data-tilt-max="10">
       <div class="flip-card-inner">
         <div class="card card-tr flip-card-front" id="card-front">
           <div class="card-top card-top-tr">
@@ -70,5 +75,6 @@
     </div>
 
     <script src="{{ url_for('static',filename='styles/scripts.js') }}"></script>
+    <script src="{{ url_for('static',filename='styles/vanilla-tilt.min.js') }}"></script>
   </body>
 </html>
