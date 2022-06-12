@@ -29,7 +29,7 @@ def account():
 
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
-            number = random.randint(100000000000000000000,900000000000000000000)
+            number = random.randint(1000000000000000000000,9000000000000000000000)
             account_id = hex(number)
             connection.execute('INSERT INTO accounts (name, surname, account_id, balance) VALUES (?, ?, ?, ?)', (name, surname, account_id, 0))
             connection.commit()
