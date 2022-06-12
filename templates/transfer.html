@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ProgettoSDFLask - Transfer</title>
@@ -16,39 +16,59 @@
       type="text/css"
       href="{{ url_for('static',filename='styles/styles.css') }}"
     />
-</head>
-<body>
-    <div class="card card-tr">
-        <div class="card-top card-top-tr">
-          <div class="card-form card-form-tr">
-
-            <div class="header header-tr">ID Mittente</div>
-            <input type="text" id="input-id-sender" class="input-id input-id-sender" 
+  </head>
+  <body>
+    <div class="flip-card" id="flip-card">
+      <div class="flip-card-inner">
+        <div class="card card-tr flip-card-front" id="card-front">
+          <div class="card-top card-top-tr">
+            <div class="card-form card-form-tr">
+                <div class="title">Transfer 💸🤝🏻</div>
+                <div class="notice op0">-------------</div>
+              <div class="header header-tr">Sender ID</div>
+              <input
+                type="text"
+                id="input-id-sender"
+                class="input-id input-id-sender"
                 onkeyup="checkLength('input-id-sender', 'error-sender')"
-            />
-            <div class="error op0" id="error-sender">-------------</div>
-
-            <div class="header header-tr">ID Destinatario</div>
-            <input type="text" id="input-id-receiver" class="input-id input-id-receiver"
-                onkeyup="checkLength('input-id-receiver', 'error-receiver')"    
-            />
-            <div class="error op0" id="error-receiver">-------------</div>
-
-            <div class="header header-tr">Ammontare</div>
-            <input type="text" id="input-amount" class="input-amount" />
-            <div class="error op0" id="error-amount">-------------</div>
-
-            <button 
+              />
+              <div class="notice red op0" id="error-sender">-------------</div>
+              <div class="header header-tr">Receiver ID</div>
+              <input
+                type="text"
+                id="input-id-receiver"
+                class="input-id input-id-receiver"
+                onkeyup="checkLength('input-id-receiver', 'error-receiver')"
+              />
+              <div class="notice red op0" id="error-receiver">-------------</div>
+              <div class="header header-tr">Amount</div>
+              <input type="text" id="input-amount" class="input-amount" />
+              <div class="notice red op0" id="error-amount">-------------</div>
+              <button
                 type="submit"
                 onclick="sendTransfer()"
                 class="btn btn-primary"
-                id="button">
-            Invia
+                id="button"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card card-tr flip-card-back">
+          <div class="card-top card-top-tr">
+            <div class="alert" id="alert"></div>
+            <button
+              onclick="flipCard('flip-card'), resetTransfer()"
+              class="btn btn-primary btn-tr"
+            >
+              New transaction
             </button>
           </div>
         </div>
+      </div>
     </div>
-    
+
     <script src="{{ url_for('static',filename='styles/scripts.js') }}"></script>
-</body>
+  </body>
 </html>

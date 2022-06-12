@@ -109,18 +109,57 @@ function httpPost(url, arr) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open("POST", url, true);
   xmlHttp.setRequestHeader('Content-Type', 'application/json');
+
+  var result = ""
+  xmlHttp.onreadystatechange = (function(_this) {
+    return function() {
+      if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+        result = xmlHttp.responseText;
+        var parsed = JSON.parse(result)
+        if(parsed.Status == "Success") {
+          resultPOST("The transaction was completed successfully!");
+        }
+        else if(parsed.Status == "Failure") {
+          resultPOST(parsed.Error);
+        }
+      };
+    }
+  })(this);
+
   xmlHttp.send(JSON.stringify({
     from: arr[0],
     to: arr[1],
     amount: arr[2]
   }));
-  return xmlHttp.responseText;
+  console.log("Data has been sent!")
+}
+
+function resultPOST(txt) {
+  // var flip_card = document.getElementById("flip-card");
+  var alert = document.getElementById("alert");
+  alert.innerHTML = txt;
+  flipCard("flip-card")
+  // flip_card.classList.add("flip-card-flip");
+}
+
+function flipCard(id) {
+  var flip_card = document.getElementById(id)
+  flip_card.classList.toggle("flip-card-flip")
+}
+
+function resetTransfer() {
+  var sender = document.getElementById("input-id-sender")
+  var receiver = document.getElementById("input-id-receiver")
+  var amount = document.getElementById("input-amount")
+  sender.value = ""
+  receiver.value = ""
+  amount.value = ""
 }
 
 // Chiamato dal pulsante "Cerca", utilizza l'ID inserito per ottenere tutti i dati del
 // rispettivo account e inserirli opportunamente nella pagina visibile all'utente
 function getInput() {
-  if (checkLength("input-id", "error")) {
+  if (checkLength("input-id", "notice")) {
     reset();
     var input = document.getElementById("input-id").value;
     var url = "http://127.0.0.1:5000/api/account/" + input;
@@ -136,6 +175,9 @@ function getInput() {
       var createdAt = document.getElementById("acc-createdAt");
       var name = document.getElementById("acc-name");
       var surname = document.getElementById("acc-surname");
+
+      var tempText = "Account " + parsed.AccountID + " found"
+      showNotice(tempText, "notice", "green")
 
       id.innerHTML = "";
       balance.innerHTML = "";
@@ -163,9 +205,10 @@ function getInput() {
     }
     else if (parsed.Status == "Failure") {
       hide();
-      showError(
-        "L'account inserito non esiste",
-        "error"
+      showNotice(
+        parsed.Error,
+        "notice",
+        "red"
       );
     }
   }
@@ -190,35 +233,47 @@ function setEnter() {
 
 // Controlla che l'ID inserito sia lungo 20 caratteri, in caso contrario visualizza
 // un bordo rosso al textbox di input e mostra un avviso di errore
-function checkLength(input_id, error_id) {
+function checkLength(input_id, notice_id) {
   var input = document.getElementById(input_id);
   if (input.value.length != 20) {
     input.classList.add("border-red");
-    showError(
-      "L'id inserito non è accettato (lunghezza 20 caratteri)",
-      error_id
+    showNotice(
+      "The entered ID's length must be 20 characters",
+      notice_id,
+      "red"
     );
     return false;
   } else {
     input.classList.remove("border-red");
-    hideError(error_id);
+    hideError(notice_id);
     return true;
   }
 }
 
 // Funzione che inserisce una data stringa di testo (l'errore) all'opportuno
 // elemento e lo mostra
-function showError(error, error_id) {
-  var err_box = document.getElementById(error_id);
-  err_box.innerHTML = error;
-  err_box.classList.remove("op0");
+function showNotice(notice, notice_id, color) {
+  var notice_box = document.getElementById(notice_id);
+  notice_box.innerHTML = notice;
+  notice_box.classList.remove("op0");
+  if(notice_box.classList.contains("red") && color == "green"){
+    notice_box.classList.remove("red")
+    notice_box.classList.add("green")
+    setTimeout(function() {
+      hideError(notice_id);
+    }, 5000);
+  }
+  else if(notice_box.classList.contains("green") && color == "red"){
+    notice_box.classList.remove("green")
+    notice_box.classList.add("red")
+  }
 }
 
 // Nasconde l'avviso di errore
-function hideError(error_id) {
-  var err_box = document.getElementById(error_id);
-  err_box.innerHTML = "-------------";
-  err_box.classList.add("op0");
+function hideError(notice_id) {
+  var notice_box = document.getElementById(notice_id);
+  notice_box.innerHTML = "-------------";
+  notice_box.classList.add("op0");
 }
 
 // Restituisce il nome del .html attualmente visualizzato
@@ -235,10 +290,7 @@ function sendTransfer() {
     document.getElementById("input-id-receiver").value,
     document.getElementById("input-amount").value
   ]
-  // if(httpPost("http://127.0.0.1:5000/api/transfer", arr).Status)
-  var content = httpPost("http://127.0.0.1:5000/api/transfer", arr);
-  var parsed = JSON.parse(content);
-  console.log(content);
+  httpPost("http://127.0.0.1:5000/api/transfer", arr);
 }
 
 if (getPageName() == "") setEnter();
