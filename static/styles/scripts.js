@@ -15,18 +15,17 @@ function hide() {
 function checkTipologiaTX(tx) {
   var input = document.getElementById("input-id").value;
   var receiver = tx.receiver;
-  var ammontare = tx.amount;
+  var amount = tx.amount;
 
-  console.log("my id: " + input + ", " + "destinatario: " + receiver);
   if (receiver == "Withdrawal")
   {
-    return "uscita (prelievo)"
+    return "Withdrawal"
   }
   if (input != receiver) {
-    return "trasferimento";
+    return "Transfer";
   }
-  if (input == receiver && ammontare > 0) {
-    return "entrata (versamento)";
+  if (input == receiver && amount > 0) {
+    return "Deposit";
   }
 }
 
@@ -57,13 +56,13 @@ function populate(tx, input) {
     x++;
 
     var tipologia = document.createElement("div");
-    temp = document.createTextNode("Tipologia: " + checkTipologiaTX(tx[i]));
+    temp = document.createTextNode("Type: " + checkTipologiaTX(tx[i]));
     tipologia.appendChild(temp);
     cellNode2.appendChild(tipologia);
     rowNode.appendChild(cellNode2);
 
     var ammontare = document.createElement("div");
-    temp = document.createTextNode("Ammontare: " + Math.abs(tx[i].amount));
+    temp = document.createTextNode("Amount: " + Math.abs(tx[i].amount));
     ammontare.appendChild(temp);
     cellNode2.appendChild(ammontare);
     rowNode.appendChild(cellNode2);
@@ -71,23 +70,23 @@ function populate(tx, input) {
     if (tx[i].receiver != input) {
       if(!tx[i].receiver == "Withdrawal") {
         var destinatario = document.createElement("div");
-        temp = document.createTextNode("Destinatario: " + tx[i].receiver);
+        temp = document.createTextNode("Receiver: " + tx[i].receiver);
         destinatario.appendChild(temp);
         cellNode2.appendChild(destinatario);
       }
       var mittente = document.createElement("div");
-      temp = document.createTextNode("Mittente: " + tx[i].sender);
+      temp = document.createTextNode("Sender: " + tx[i].sender);
       mittente.appendChild(temp);
       cellNode2.appendChild(mittente);
     }
 
     var id = document.createElement("div");
-    temp = document.createTextNode("Id: " + tx[i].id);
+    temp = document.createTextNode("ID: " + tx[i].id);
     id.appendChild(temp);
     cellNode2.appendChild(id);
 
     var data = document.createElement("div");
-    temp = document.createTextNode("Data: " + tx[i].timestamp);
+    temp = document.createTextNode("Date: " + tx[i].timestamp);
     data.appendChild(temp);
     cellNode2.appendChild(data);
 
@@ -117,10 +116,10 @@ function httpPost(url, arr) {
         result = xmlHttp.responseText;
         var parsed = JSON.parse(result)
         if(parsed.Status == "Success") {
-          resultPOST("The transaction was completed successfully!");
+          resultPOST("The transaction was completed successfully!", parsed.Status);
         }
         else if(parsed.Status == "Failure") {
-          resultPOST(parsed.Error);
+          resultPOST(parsed.Error, parsed.Status);
         }
       };
     }
@@ -131,13 +130,21 @@ function httpPost(url, arr) {
     to: arr[1],
     amount: arr[2]
   }));
-  console.log("Data has been sent!")
 }
 
-function resultPOST(txt) {
+function resultPOST(txt, result) {
   // var flip_card = document.getElementById("flip-card");
   var alert = document.getElementById("alert");
+  var title = document.getElementById("title");
   alert.innerHTML = txt;
+  if (result == "Success")
+  {
+    title.innerHTML = "All done! 👍🏻"
+  }
+  else if (result == "Failure")
+  {
+    title.innerHTML = "Something went wrong! 🤔"
+  }
   flipCard("flip-card")
   // flip_card.classList.add("flip-card-flip");
 }
@@ -176,7 +183,7 @@ function getInput() {
       var name = document.getElementById("acc-name");
       var surname = document.getElementById("acc-surname");
 
-      var tempText = "Account " + parsed.AccountID + " found"
+      var tempText = "Account " + parsed.AccountID + " found ✅"
       showNotice(tempText, "notice", "green")
 
       id.innerHTML = "";
@@ -205,8 +212,9 @@ function getInput() {
     }
     else if (parsed.Status == "Failure") {
       hide();
+      var tempText = parsed.Error + " ❌"
       showNotice(
-        parsed.Error,
+        tempText,
         "notice",
         "red"
       );
@@ -238,14 +246,14 @@ function checkLength(input_id, notice_id) {
   if (input.value.length != 20) {
     input.classList.add("border-red");
     showNotice(
-      "The entered ID's length must be 20 characters",
+      "❗The entered ID's length must be 20 characters❗",
       notice_id,
       "red"
     );
     return false;
   } else {
     input.classList.remove("border-red");
-    hideError(notice_id);
+    hideNotice(notice_id);
     return true;
   }
 }
@@ -260,7 +268,7 @@ function showNotice(notice, notice_id, color) {
     notice_box.classList.remove("red")
     notice_box.classList.add("green")
     setTimeout(function() {
-      hideError(notice_id);
+      hideNotice(notice_id);
     }, 5000);
   }
   else if(notice_box.classList.contains("green") && color == "red"){
@@ -270,7 +278,7 @@ function showNotice(notice, notice_id, color) {
 }
 
 // Nasconde l'avviso di errore
-function hideError(notice_id) {
+function hideNotice(notice_id) {
   var notice_box = document.getElementById(notice_id);
   notice_box.innerHTML = "-------------";
   notice_box.classList.add("op0");
@@ -285,12 +293,37 @@ function getPageName() {
 
 // Invia al sistema i dati mittente, destinatario e ammontare
 function sendTransfer() {
-  var arr = [
-    document.getElementById("input-id-sender").value,
-    document.getElementById("input-id-receiver").value,
-    document.getElementById("input-amount").value
-  ]
-  httpPost("http://127.0.0.1:5000/api/transfer", arr);
+  checkLength("input-id-sender", "error-sender")
+  checkLength("input-id-receiver", "error-receiver")
+  checkPositive("input-amount", "error-amount")
+  if(
+  (checkLength("input-id-sender", "error-sender")) &&
+  (checkLength("input-id-receiver", "error-receiver")) &&
+  (checkPositive("input-amount", "error-amount")))
+  {
+    var arr = [
+      document.getElementById("input-id-sender").value,
+      document.getElementById("input-id-receiver").value,
+      document.getElementById("input-amount").value
+    ]
+    httpPost("http://127.0.0.1:5000/api/transfer", arr);
+  }
+}
+
+function checkPositive(input_id, notice_id) {
+  var input = document.getElementById(input_id).value
+  if(input > 0){
+    hideNotice(notice_id)
+    return true}
+  else
+  {
+    showNotice(
+      "❗The amount must be higher than zero❗",
+      notice_id,
+      "red"
+    )
+    return false
+  }
 }
 
 if (getPageName() == "") setEnter();

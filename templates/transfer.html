@@ -28,9 +28,9 @@
         <div class="card card-tr flip-card-front" id="card-front">
           <div class="card-top card-top-tr">
             <div class="card-form card-form-tr">
-                <div class="title">Transfer 💸🤝🏻</div>
+                <div class="title noselect">Transfer 💸🤝🏻</div>
                 <div class="notice op0">-------------</div>
-              <div class="header header-tr">Sender ID</div>
+              <div class="header header-tr noselect">Sender ID</div>
               <input
                 type="text"
                 id="input-id-sender"
@@ -38,7 +38,7 @@
                 onkeyup="checkLength('input-id-sender', 'error-sender')"
               />
               <div class="notice red op0" id="error-sender">-------------</div>
-              <div class="header header-tr">Receiver ID</div>
+              <div class="header header-tr noselect">Receiver ID</div>
               <input
                 type="text"
                 id="input-id-receiver"
@@ -46,13 +46,18 @@
                 onkeyup="checkLength('input-id-receiver', 'error-receiver')"
               />
               <div class="notice red op0" id="error-receiver">-------------</div>
-              <div class="header header-tr">Amount</div>
-              <input type="text" id="input-amount" class="input-amount" />
+              <div class="header header-tr noselect">Amount</div>
+              <input 
+                type="text" 
+                id="input-amount" 
+                class="input-id input-amount"
+                onkeyup="checkPositive('input-amount', 'error-amount')"
+              />
               <div class="notice red op0" id="error-amount">-------------</div>
               <button
                 type="submit"
                 onclick="sendTransfer()"
-                class="btn btn-primary"
+                class="btn btn-primary noselect"
                 id="button"
               >
                 Send
@@ -62,10 +67,12 @@
         </div>
         <div class="card card-tr flip-card-back">
           <div class="card-top card-top-tr">
-            <div class="alert" id="alert"></div>
+            <div class="title noselect" id="title"></div>
+            <div class="alert noselect" id="alert"></div>
             <button
+              type="submit"
               onclick="flipCard('flip-card'), resetTransfer()"
-              class="btn btn-primary btn-tr"
+              class="btn btn-primary btn-tr noselect"
             >
               New transaction
             </button>
@@ -73,6 +80,12 @@
         </div>
       </div>
     </div>
+
+    <div class="credits noselect">
+        <div class="c1">[ Frontend ← <a href="https://github.com/unimibYNGX">@unimibYNGX</a> ]</div>
+        <div> </div>
+        <div class="c2"> [ Backend ← <a href="https://github.com/washedDragonyx">@washedDragonyx</a> ]</div>
+      </div>
 
     <script src="{{ url_for('static',filename='styles/scripts.js') }}"></script>
     <script src="{{ url_for('static',filename='styles/vanilla-tilt.min.js') }}"></script>

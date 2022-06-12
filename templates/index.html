@@ -26,13 +26,13 @@
       data-tilt-max="10">
       <div class="card-top">
         <div class="card-form">
-          <div class="title">Account Search 👤🔍</div>
-          <div class="header">Enter the ID in the field below</div>
+          <div class="title noselect">Account Search 👤🔍</div>
+          <div class="header noselect">Enter the ID in the field below</div>
           <input type="text" id="input-id" class="input-id" />
           <button
             type="submit"
             onclick="getInput()"
-            class="btn btn-primary"
+            class="btn btn-primary noselect"
             id="button"
           >
             Search
@@ -70,6 +70,12 @@
           <table class="tb-right" id="transactions-table"></table>
         </div>
       </div>
+    </div>
+
+    <div class="credits noselect">
+      <div class="c1">[ Frontend ← <a href="https://github.com/unimibYNGX">@unimibYNGX</a> ]</div>
+      <div> </div>
+      <div class="c2"> [ Backend ← <a href="https://github.com/washedDragonyx">@washedDragonyx</a> ]</div>
     </div>
 
     <script src="{{ url_for('static',filename='styles/scripts.js') }}"></script>
