@@ -21,8 +21,13 @@ body {
   display: flex;
   justify-content: center;
   background-color: rgb(230, 239, 246);
-
   align-items: center;
+
+  background: url("bg.jpeg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .card {
@@ -32,13 +37,15 @@ body {
   height: 80%;
   width: 750px;
   background-color: white;
-
   border-radius: 25px;
   border: none;
   box-shadow: var(--box-shadow);
   flex-wrap: wrap;
   padding: 30px;
   flex-direction: column;
+
+  background-color: rgba(255, 255, 255, .15);  
+  backdrop-filter: blur(5px);
 }
 
 .card-top {
