@@ -148,6 +148,12 @@ button[type="submit"] {
   outline: none;
   border: none;
   border-radius: 10px;
+
+  padding-left: 24px; 
+  padding-right: 24px;
+  padding-top: 11px; 
+  padding-bottom: 11px;
+  font-size: 12px;
 }
 
 input[name="input-id"] {
@@ -178,7 +184,7 @@ th {
   /* border: 0.1px solid black; */
   border-color: rgba(142, 223, 253, 0.8);
   border: 0.5px rgba(142, 223, 253, 0.8);;
-  height: 36px;
+  height: 40px;
   padding-left: 8px;
   padding-right: 8px;
 }
@@ -305,7 +311,7 @@ td {
 }
 
 .btn-tr {
-  width: 60%;
+  width: fit-content
 }
 
 .title {
@@ -334,6 +340,8 @@ td {
   padding-left: 20px;
   padding-right: 20px;
   font-size: 13px;
+
+  display: none;
 }
 
 .c1, .c2 {
@@ -352,4 +360,3 @@ a:hover {
 .c1 {
   margin-right: 10px;
 }
-

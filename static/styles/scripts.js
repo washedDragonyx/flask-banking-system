@@ -43,7 +43,6 @@ function populate(tx, input) {
 
   let x = 1;
   for (let i = tx.length - 1; i >= 0; i--) {
-    console.log(tx[i]);
 
     var rowNode = document.createElement("tr");
     if (i == tx.length - 1) rowNode.classList.add("bold");
@@ -68,7 +67,7 @@ function populate(tx, input) {
     rowNode.appendChild(cellNode2);
 
     if (tx[i].receiver != input) {
-      if(!tx[i].receiver == "Withdrawal") {
+      if(!(tx[i].receiver == "Withdrawal")) {
         var destinatario = document.createElement("div");
         temp = document.createTextNode("Receiver: " + tx[i].receiver);
         destinatario.appendChild(temp);
@@ -90,7 +89,6 @@ function populate(tx, input) {
     data.appendChild(temp);
     cellNode2.appendChild(data);
 
-    console.log(rowNode);
     table.appendChild(rowNode);
   }
 }
