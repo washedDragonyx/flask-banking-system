@@ -475,9 +475,9 @@ def register():
 def transfer():
     return render_template('transfer.html')
 
-@app.route('/static/styles.css')
+@app.route('/static/css/styles.css')
 def styles():
-    return render_template('/static/styles.css')
+    return render_template('/static/css/styles.css')
 
 def check_account_format(accounts):
     for account in accounts: 
