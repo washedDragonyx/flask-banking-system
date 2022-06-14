@@ -479,9 +479,6 @@ def transfer():
 def styles():
     return render_template('/static/styles.css')
 
-
-
-
 def check_account_format(accounts):
     for account in accounts: 
         if len(account) != 20:

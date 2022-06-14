@@ -28,6 +28,22 @@ input[type="text"]:focus,
 input[type="text"]:hover, input[type="text"]:focus {
   background-color: rgba(255, 255, 255, 0.654)!important;
 }
+input[type="number"]:focus,
+.uneditable-input:focus {   
+  border-color: rgba(142, 223, 253, 0.8);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(139, 214, 255, 0.6);
+  outline: 0 none;
+}
+input[type="number"]:hover, input[type="number"]:focus {
+  background-color: rgba(255, 255, 255, 0.654)!important;
+}
+input[type="number"]::-webkit-inner-spin-button, .no-spin::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+input[type="number"] {
+  -moz-appearance:textfield !important;
+}
 
 button {
   background-color: rgba(255, 255, 255, .40) !important;
@@ -105,7 +121,7 @@ body {
   align-items: center;
   flex-wrap: wrap;
   height: 100%;
-  width: 400px;
+  width: 450px;
   border-radius: 20px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -229,6 +245,11 @@ td {
   font-size: 15px;
 }
 
+.header {
+  width: 100%;
+  text-align: center;
+}
+
 .notice {
   justify-content: center;
   text-align: center;
@@ -277,8 +298,8 @@ td {
 
 .flip-card {
   perspective: 1000px;
-  height: 500px;
-  width: 500px;
+  height: 550px;
+  width: 550px;
 }
 
 .flip-card-inner {
@@ -349,14 +370,25 @@ td {
 }
 
 a {
-  color: rgb(165,219,235)!important;
+  color: rgb(60, 60, 60)!important;
+  /* color: rgb(165,219,235)!important; */
   text-decoration: none;
 }
 a:hover {
   /* color: rgba(255, 255, 255, 0.654)!important; */
-  color: white!important
+  /* color: white!important */
+  color: rgb(0,105,160)!important;
 }
 
 .c1 {
   margin-right: 10px;
+}
+
+.nav {
+  position: absolute;
+  top: 0%;
+}
+.ntransfer {
+  margin-top: 5px;
+  font-size: 12px;
 }

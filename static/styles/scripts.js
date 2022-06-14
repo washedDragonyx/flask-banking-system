@@ -1,13 +1,17 @@
 // Funzione per visualizzare le informazioni dell'utente
 function show() {
   var tb_left = document.getElementById("tb-left");
+  var tb_right = document.getElementById("transactions-table");
   tb_left.classList.remove("hide");
+  tb_right.classList.remove("hide");
 }
 
 // Funzione per nascondere le informazioni dell'utente (quando vuote)
 function hide() {
   var tb_left = document.getElementById("tb-left");
+  var tb_right = document.getElementById("transactions-table");
   tb_left.classList.add("hide");
+  tb_right.classList.add("hide");
 }
 
 // Funzione chiamata da populate() per distinguere la transazione
