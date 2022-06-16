@@ -20,23 +20,25 @@
   <body>
     <div class="nav">
       <div class="ntransfer">
-        <a href="http://127.0.0.1:5000/"
-        >Go to Account Search →</a>
+        <a href="http://127.0.0.1:5000/">Go to Account Search →</a>
       </div>
     </div>
 
-    <div class="flip-card" id="flip-card"
-        data-tilt 
-        data-tilt-reverse="false"
-        data-tilt-speed="100"
-        data-tilt-perspective="2000"
-        data-tilt-max="1.5">
+    <div
+      class="flip-card"
+      id="flip-card"
+      data-tilt
+      data-tilt-reverse="false"
+      data-tilt-speed="100"
+      data-tilt-perspective="2000"
+      data-tilt-max="1.5"
+    >
       <div class="flip-card-inner">
         <div class="card card-tr flip-card-front" id="card-front">
           <div class="card-top card-top-tr">
             <div class="card-form card-form-tr">
-                <div class="title noselect">Transfer 💸🤝🏻</div>
-                <div class="notice op0">-------------</div>
+              <div class="title noselect">Transfer 💸🤝🏻</div>
+              <div class="notice op0">-------------</div>
               <div class="header header-tr noselect">Sender ID</div>
               <input
                 type="text"
@@ -52,12 +54,14 @@
                 class="input-id input-id-receiver"
                 onkeyup="checkLength('input-id-receiver', 'error-receiver')"
               />
-              <div class="notice red op0" id="error-receiver">-------------</div>
+              <div class="notice red op0" id="error-receiver">
+                -------------
+              </div>
               <div class="header header-tr noselect">Amount</div>
-              <input 
-                type="number" 
+              <input
+                type="number"
                 min="0.01"
-                id="input-amount" 
+                id="input-amount"
                 class="input-id input-amount"
                 onkeyup="checkAmount('input-amount', 'error-amount')"
               />
@@ -90,10 +94,15 @@
     </div>
 
     <div class="credits noselect">
-        <div class="c1">[ Frontend ← <a href="https://github.com/unimibYNGX">@unimibYNGX</a> ]</div>
-        <div> </div>
-        <div class="c2"> [ Backend ← <a href="https://github.com/washedDragonyx">@washedDragonyx</a> ]</div>
+      <div class="c1">
+        [ Frontend ← <a href="https://github.com/unimibYNGX">@unimibYNGX</a> ]
       </div>
+      <div></div>
+      <div class="c2">
+        [ Backend ←
+        <a href="https://github.com/washedDragonyx">@washedDragonyx</a> ]
+      </div>
+    </div>
 
     <script src="{{ url_for('static',filename='styles/js/scripts.js') }}"></script>
     <script src="{{ url_for('static',filename='styles/js/vanilla-tilt.min.js') }}"></script>

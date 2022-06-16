@@ -20,44 +20,50 @@
 
 textarea:focus,
 input[type="text"]:focus,
-.uneditable-input:focus {   
+.uneditable-input:focus {
   border-color: rgba(142, 223, 253, 0.8);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(139, 214, 255, 0.6);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
+    0 0 8px rgba(139, 214, 255, 0.6);
   outline: 0 none;
 }
-input[type="text"]:hover, input[type="text"]:focus {
-  background-color: rgba(255, 255, 255, 0.654)!important;
+input[type="text"]:hover,
+input[type="text"]:focus {
+  background-color: rgba(255, 255, 255, 0.654) !important;
 }
 input[type="number"]:focus,
-.uneditable-input:focus {   
+.uneditable-input:focus {
   border-color: rgba(142, 223, 253, 0.8);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(139, 214, 255, 0.6);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
+    0 0 8px rgba(139, 214, 255, 0.6);
   outline: 0 none;
 }
-input[type="number"]:hover, input[type="number"]:focus {
-  background-color: rgba(255, 255, 255, 0.654)!important;
+input[type="number"]:hover,
+input[type="number"]:focus {
+  background-color: rgba(255, 255, 255, 0.654) !important;
 }
-input[type="number"]::-webkit-inner-spin-button, .no-spin::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+.no-spin::-webkit-outer-spin-button {
   -webkit-appearance: none !important;
   margin: 0 !important;
 }
 input[type="number"] {
-  -moz-appearance:textfield !important;
+  -moz-appearance: textfield !important;
 }
 
 button {
-  background-color: rgba(255, 255, 255, .40) !important;
-  color: rgb(60,60,60)!important;
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  color: rgb(60, 60, 60) !important;
   backdrop-filter: blur(5px);
 }
 button:hover {
-  background-color: rgba(255, 255, 255, 0.654)!important;
+  background-color: rgba(255, 255, 255, 0.654) !important;
 }
-button[type="submit"]:focus, 
+button[type="submit"]:focus,
 .uneditable-input:focus {
   border-color: rgba(142, 223, 253, 0.8);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(139, 214, 255, 0.6);
-  outline: 0!important;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
+    0 0 8px rgba(139, 214, 255, 0.6);
+  outline: 0 !important;
 }
 .btn[type="submit"]:focus {
   outline: 0;
@@ -65,7 +71,8 @@ button[type="submit"]:focus,
 .btn[type="submit"]:active {
   outline: 0;
   border-color: rgba(142, 223, 253, 0.8);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(139, 214, 255, 0.6);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
+    0 0 8px rgba(139, 214, 255, 0.6);
 }
 
 body {
@@ -75,7 +82,7 @@ body {
   background-color: rgb(230, 239, 246);
   align-items: center;
 
-  background: url("bg.jpeg") no-repeat center center fixed; 
+  background: url("bg.jpeg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -96,7 +103,7 @@ body {
   padding: 30px;
   flex-direction: column;
 
-  background-color: rgba(255, 255, 255, .15);  
+  background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(5px);
 }
 
@@ -165,9 +172,9 @@ button[type="submit"] {
   border: none;
   border-radius: 10px;
 
-  padding-left: 24px; 
+  padding-left: 24px;
   padding-right: 24px;
-  padding-top: 11px; 
+  padding-top: 11px;
   padding-bottom: 11px;
   font-size: 12px;
 }
@@ -176,7 +183,7 @@ input[name="input-id"] {
   border: none;
   width: 100%;
   /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
-  border-radius: 5px; 
+  border-radius: 5px;
 }
 
 table,
@@ -195,11 +202,11 @@ th {
 
 .input-id {
   margin-right: 20px !important;
-  background-color: rgba(255, 255, 255, .40); 
+  background-color: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
   /* border: 0.1px solid black; */
   border-color: rgba(142, 223, 253, 0.8);
-  border: 0.5px rgba(142, 223, 253, 0.8);;
+  border: 0.5px rgba(142, 223, 253, 0.8);
   height: 40px;
   padding-left: 8px;
   padding-right: 8px;
@@ -241,7 +248,8 @@ td {
   border: 1.5px solid rgba(253, 142, 142, 0.8);
 }
 
-.header, .error {
+.header,
+.error {
   font-size: 15px;
 }
 
@@ -283,8 +291,10 @@ td {
   justify-content: center;
 }
 
-.input-id-sender, .input-id-receiver, .input-amount {
-  margin: 0!important;
+.input-id-sender,
+.input-id-receiver,
+.input-amount {
+  margin: 0 !important;
 }
 
 .input-amount {
@@ -313,9 +323,10 @@ td {
 
 .flip-card-flip .flip-card-inner {
   transform: rotateY(180deg);
-} 
+}
 
-.flip-card-front, .flip-card-back {
+.flip-card-front,
+.flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -332,7 +343,7 @@ td {
 }
 
 .btn-tr {
-  width: fit-content
+  width: fit-content;
 }
 
 .title {
@@ -345,11 +356,11 @@ td {
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
@@ -365,19 +376,20 @@ td {
   display: none;
 }
 
-.c1, .c2 {
-  color: rgb(165,219,235);
+.c1,
+.c2 {
+  color: rgb(165, 219, 235);
 }
 
 a {
-  color: rgb(60, 60, 60)!important;
+  color: rgb(60, 60, 60) !important;
   /* color: rgb(165,219,235)!important; */
   text-decoration: none;
 }
 a:hover {
   /* color: rgba(255, 255, 255, 0.654)!important; */
   /* color: white!important */
-  color: rgb(0,105,160)!important;
+  color: rgb(0, 105, 160) !important;
 }
 
 .c1 {
