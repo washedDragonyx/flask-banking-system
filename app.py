@@ -245,10 +245,11 @@ def account_id(account_id):
                 }
                 
                 return jsonify(data)
-            print(amount)
-            if int(amount) >= 0:
+            
+            if float(amount) >= 0:
                 connection.execute('UPDATE accounts SET balance = balance + ? WHERE account_id = ?', (amount, account[3],))
                 connection.commit()
+                account = connection.execute('SELECT * FROM accounts WHERE account_id = ?', (account_id,)).fetchone()
                 connection.close()
                 connection = sqlite3.connect('transactions.db')
                 connection.row_factory = sqlite3.Row
@@ -271,9 +272,9 @@ def account_id(account_id):
 
                 return jsonify(data)
             else:
-                print("ENTERING ELSE")
-                amount = int(amount)*-1
-                if int(amount) > int(account[4]):
+                
+                amount = float(amount)*-1
+                if float(amount) > float(account[4]):
                     data = {
                         "Status": "Failure",
                         "Error": "Insufficient funds"
@@ -367,22 +368,19 @@ def transfer_api():
                     "Error": "Receiver account "+str(receiver)+" not found"
                 }
                 return jsonify(data)
-            if int(amount) > int(sender_account[4]):
+            if float(amount) > float(sender_account[4]):
                 data = {
                     "Status":"Failure",
                     "Error": "Insufficient funds"
                 }
                 return jsonify(data)
-            if sender == receiver:
-                data = {
-                    "Status":"Failure",
-                    "Error": "Sender and receiver cannot be the same"
-                }
-                return jsonify(data)
+            
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
             connection.execute('UPDATE accounts SET balance = balance - ? WHERE account_id = ?', (amount, sender,))
             connection.execute('UPDATE accounts SET balance = balance + ? WHERE account_id = ?', (amount, receiver,))
+            sender_account = connection.execute('SELECT * FROM accounts WHERE account_id = ?', (sender,)).fetchone()
+            receiver_account = connection.execute('SELECT * FROM accounts WHERE account_id = ?', (receiver,)).fetchone()
             connection.commit()
             connection.close()
             connection = sqlite3.connect('transactions.db')

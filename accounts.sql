@@ -5,7 +5,7 @@ CREATE TABLE accounts (
   name TEXT NOT NULL,
   surname TEXT NOT NULL,
   account_id TEXT NOT NULL,
-  balance INTEGER NOT NULL,
+  balance FLOAT NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
