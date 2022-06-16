@@ -56,10 +56,10 @@
               <div class="header header-tr noselect">Amount</div>
               <input 
                 type="number" 
-                oninput="this.value = Math.round(this.value);"
+                min="0.01"
                 id="input-amount" 
                 class="input-id input-amount"
-                onkeyup="checkPositive('input-amount', 'error-amount')"
+                onkeyup="checkAmount('input-amount', 'error-amount')"
               />
               <div class="notice red op0" id="error-amount">-------------</div>
               <button
