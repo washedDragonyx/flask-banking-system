@@ -401,6 +401,7 @@ a:hover {
   top: 0%;
 }
 .ntransfer {
+  width: fit-content;
   margin-top: 5px;
   font-size: 12px;
 }

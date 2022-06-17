@@ -104,10 +104,14 @@ function httpGet(url) {
 }
 
 // Funzione che invia un array di tre dati (mittente, destinatario, ammontare) ad un url
-function httpPost(url, arr) {
+function httpPost(url, arr, type) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open("POST", url, true);
   xmlHttp.setRequestHeader("Content-Type", "application/json");
+
+  var msg = "";
+  if (type == "transfer") msg = "The transaction was completed successfully!";
+  if (type == "register") msg = "The registration was completed successfully!";
 
   var result = "";
   xmlHttp.onreadystatechange = (function (_this) {
@@ -116,10 +120,7 @@ function httpPost(url, arr) {
         result = xmlHttp.responseText;
         var parsed = JSON.parse(result);
         if (parsed.Status == "Success") {
-          resultPOST(
-            "The transaction was completed successfully!",
-            parsed.Status
-          );
+          resultPOST(msg, parsed.Status);
         } else if (parsed.Status == "Failure") {
           resultPOST(parsed.Error, parsed.Status);
         }
@@ -127,13 +128,25 @@ function httpPost(url, arr) {
     };
   })(this);
 
-  xmlHttp.send(
-    JSON.stringify({
-      from: arr[0],
-      to: arr[1],
-      amount: arr[2],
-    })
-  );
+  if (type == "transfer") {
+    console.log("transferring!");
+    xmlHttp.send(
+      JSON.stringify({
+        from: arr[0],
+        to: arr[1],
+        amount: arr[2],
+      })
+    );
+  }
+  if (type == "register") {
+    console.log("register!");
+    xmlHttp.send(
+      JSON.stringify({
+        name: arr[0],
+        surname: arr[1],
+      })
+    );
+  }
 }
 
 function resultPOST(txt, result) {
@@ -167,7 +180,7 @@ function resetTransfer() {
 // Chiamato dal pulsante "Cerca", utilizza l'ID inserito per ottenere tutti i dati del
 // rispettivo account e inserirli opportunamente nella pagina visibile all'utente
 function getInput() {
-  if (checkLength("input-id", "notice")) {
+  if (checkLength("input-id", "notice", "id")) {
     reset();
     var input = document.getElementById("input-id").value;
     var url = "http://127.0.0.1:5000/api/account/" + input;
@@ -235,28 +248,6 @@ function setEnter() {
   });
 }
 
-// Controlla che l'ID inserito sia lungo 20 caratteri, in caso contrario visualizza
-// un bordo rosso al textbox di input e mostra un avviso di errore
-function checkLength(input_id, notice_id) {
-  var input = document.getElementById(input_id);
-  if (input.value.length == 0) {
-    input.classList.add("border-red");
-    showNotice("❗The ID can't be empty❗", notice_id, "red");
-  } else if (input.value.length != 20) {
-    input.classList.add("border-red");
-    showNotice(
-      "❗The entered ID's length must be 20 characters❗",
-      notice_id,
-      "red"
-    );
-    return false;
-  } else {
-    input.classList.remove("border-red");
-    hideNotice(notice_id);
-    return true;
-  }
-}
-
 // Funzione che inserisce una data stringa di testo (l'errore) all'opportuno
 // elemento e lo mostra
 function showNotice(notice, notice_id, color) {
@@ -291,49 +282,90 @@ function getPageName() {
 
 // Invia al sistema i dati mittente, destinatario e ammontare
 function sendTransfer() {
-  checkLength("input-id-sender", "error-sender");
-  checkLength("input-id-receiver", "error-receiver");
-  checkAmount("input-amount", "error-amount");
+  checkLength("input-id-sender", "error-sender", "id");
+  checkLength("input-id-receiver", "error-receiver", "id");
+  checkAmount("input-amount", "error-amount", "id");
   if (
-    checkLength("input-id-sender", "error-sender") &&
-    checkLength("input-id-receiver", "error-receiver") &&
-    checkAmount("input-amount", "error-amount")
+    checkLength("input-id-sender", "error-sender", "id") &&
+    checkLength("input-id-receiver", "error-receiver", "id") &&
+    checkAmount("input-amount", "error-amount", "id")
   ) {
     var arr = [
       document.getElementById("input-id-sender").value,
       document.getElementById("input-id-receiver").value,
-      roundToHundredth(document.getElementById("input-amount").value)
+      roundToHundredth(document.getElementById("input-amount").value),
     ];
-    httpPost("http://127.0.0.1:5000/api/transfer", arr);
+    httpPost("http://127.0.0.1:5000/api/transfer", arr, "transfer");
+  }
+}
+
+function sendRegister() {
+  checkLength("input-name", "error-name", "name");
+  checkLength("input-surname", "error-surname", "name");
+  if (
+    checkLength("input-name", "error-name", "name") &&
+    checkLength("input-surname", "error-surname", "name")
+  ) {
+    var arr = [
+      document.getElementById("input-name").value,
+      document.getElementById("input-surname").value,
+    ];
+    httpPost("http://127.0.0.1:5000/api/account", arr, "register");
+  }
+}
+
+// Controlla che l'ID inserito sia lungo 20 caratteri, in caso contrario visualizza
+// un bordo rosso al textbox di input e mostra un avviso di errore
+function checkLength(input_id, notice_id, type) {
+  var input = document.getElementById(input_id);
+  if (type == "ID") {
+    if (input.value.length == 0) {
+      input.classList.add("border-red");
+      showNotice("❗The ID can't be empty❗", notice_id, "red");
+    } else if (input.value.length != 20) {
+      input.classList.add("border-red");
+      showNotice(
+        "❗The entered ID's length must be 20 characters❗",
+        notice_id,
+        "red"
+      );
+      return false;
+    } else {
+      input.classList.remove("border-red");
+      hideNotice(notice_id);
+      return true;
+    }
+  }
+  if (type == "name" || type == "surname") {
+    if (input.value.length == 0) {
+      input.classList.add("border-red");
+      showNotice("❗The " + type + " can't be empty❗", notice_id, "red");
+    } else {
+      input.classList.remove("border-red");
+      hideNotice(notice_id);
+      return true;
+    }
   }
 }
 
 // Controllo il valore inserito in ammontare (Amount)
 function checkAmount(input_id, notice_id) {
   var input = document.getElementById(input_id);
-  console.clear()
-  // console.log("full value: " + input.value)
-  // console.log("millesimo: " + input.value[4])
-  
-
   if (input.value == "") {
     input.classList.add("border-red");
     showNotice("❗The amount can't be empty❗", notice_id, "red");
     return false;
   }
-
   if (input.value == 0) {
     input.classList.add("border-red");
     showNotice("❗The amount can't be zero❗", notice_id, "red");
     return false;
   }
-
   if (input.value < 0.01) {
     input.classList.add("border-red");
     showNotice("❗The amount must be higher than 0.01❗", notice_id, "red");
     return false;
   }
-
   if (input.value > 0) {
     input.classList.remove("border-red");
     hideNotice(notice_id);
@@ -342,8 +374,7 @@ function checkAmount(input_id, notice_id) {
 }
 
 function roundToHundredth(value) {
-  console.log(value)
   return Number.parseFloat(value).toFixed(2);
-};
+}
 
 if (getPageName() == "") setEnter();
