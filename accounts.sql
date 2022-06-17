@@ -9,4 +9,4 @@ CREATE TABLE accounts (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO accounts (name, surname, account_id, balance) VALUES ('nikola','zjacic', '0xec2b36bf1389737f16', 100);
+INSERT INTO accounts (name, surname, account_id, balance) VALUES ('nikola','zjacic', '6d550f3984a3c798cdbc', 100);
