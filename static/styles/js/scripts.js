@@ -363,13 +363,6 @@ function checkAmount(input_id, notice_id) {
     return false;
   }
 
-  if (isNaN(input.value)) {
-    console.log("nan")
-    input.classList.add("border-red");
-    showNotice("❗The amount can't contain letters❗", notice_id, "red");
-    return false;
-  }
-
   if (input.value == 0) {
     input.classList.add("border-red");
     showNotice("❗The amount can't be zero❗", notice_id, "red");
