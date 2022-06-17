@@ -180,7 +180,7 @@ function resetTransfer() {
 // Chiamato dal pulsante "Cerca", utilizza l'ID inserito per ottenere tutti i dati del
 // rispettivo account e inserirli opportunamente nella pagina visibile all'utente
 function getInput() {
-  if (checkLength("input-id", "notice", "id")) {
+  if (checkLength("input-id", "notice", "ID")) {
     reset();
     var input = document.getElementById("input-id").value;
     var url = "http://127.0.0.1:5000/api/account/" + input;
