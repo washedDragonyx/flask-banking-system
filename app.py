@@ -7,7 +7,7 @@ import json
 import os,binascii
 
 app = Flask(__name__)
-# app.run(debug=True)
+
 
 
 
@@ -29,6 +29,7 @@ def account():
 
             connection = sqlite3.connect('accounts.db')
             connection.row_factory = sqlite3.Row
+
             account_id = str(binascii.hexlify(os.urandom(10)).decode('ascii'))
             connection.execute('INSERT INTO accounts (name, surname, account_id, balance) VALUES (?, ?, ?, ?)', (name, surname, account_id, 0))
             connection.commit()
