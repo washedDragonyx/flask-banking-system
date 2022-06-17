@@ -177,6 +177,11 @@ function resetTransfer() {
   amount.value = "";
 }
 
+function resetRegister() {
+  document.getElementById("input-name").value = "";
+  document.getElementById("input-surname").value = "";
+}
+
 // Chiamato dal pulsante "Cerca", utilizza l'ID inserito per ottenere tutti i dati del
 // rispettivo account e inserirli opportunamente nella pagina visibile all'utente
 function getInput() {
@@ -282,13 +287,13 @@ function getPageName() {
 
 // Invia al sistema i dati mittente, destinatario e ammontare
 function sendTransfer() {
-  checkLength("input-id-sender", "error-sender", "id");
-  checkLength("input-id-receiver", "error-receiver", "id");
-  checkAmount("input-amount", "error-amount", "id");
+  checkLength("input-id-sender", "error-sender", "ID");
+  checkLength("input-id-receiver", "error-receiver", "ID");
+  checkAmount("input-amount", "error-amount", "ID");
   if (
-    checkLength("input-id-sender", "error-sender", "id") &&
-    checkLength("input-id-receiver", "error-receiver", "id") &&
-    checkAmount("input-amount", "error-amount", "id")
+    checkLength("input-id-sender", "error-sender", "ID") &&
+    checkLength("input-id-receiver", "error-receiver", "ID") &&
+    checkAmount("input-amount", "error-amount", "ID")
   ) {
     var arr = [
       document.getElementById("input-id-sender").value,
@@ -301,10 +306,10 @@ function sendTransfer() {
 
 function sendRegister() {
   checkLength("input-name", "error-name", "name");
-  checkLength("input-surname", "error-surname", "name");
+  checkLength("input-surname", "error-surname", "surname");
   if (
     checkLength("input-name", "error-name", "name") &&
-    checkLength("input-surname", "error-surname", "name")
+    checkLength("input-surname", "error-surname", "surname")
   ) {
     var arr = [
       document.getElementById("input-name").value,
@@ -351,11 +356,20 @@ function checkLength(input_id, notice_id, type) {
 // Controllo il valore inserito in ammontare (Amount)
 function checkAmount(input_id, notice_id) {
   var input = document.getElementById(input_id);
+
   if (input.value == "") {
     input.classList.add("border-red");
     showNotice("❗The amount can't be empty❗", notice_id, "red");
     return false;
   }
+
+  if (isNaN(input.value)) {
+    console.log("nan")
+    input.classList.add("border-red");
+    showNotice("❗The amount can't contain letters❗", notice_id, "red");
+    return false;
+  }
+
   if (input.value == 0) {
     input.classList.add("border-red");
     showNotice("❗The amount can't be zero❗", notice_id, "red");

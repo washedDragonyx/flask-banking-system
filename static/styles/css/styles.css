@@ -373,7 +373,7 @@ td {
   padding-right: 20px;
   font-size: 13px;
 
-  display: none;
+  /* display: none; */
 }
 
 .c1,
@@ -391,6 +391,12 @@ a:hover {
   /* color: white!important */
   color: rgb(0, 105, 160) !important;
 }
+a[href="https://github.com/unimibYNGX"], a[href="https://github.com/washedDragonyx"] {
+  color: rgb(165,219,235)!important;
+}
+a[href="https://github.com/unimibYNGX"]:hover, a[href="https://github.com/washedDragonyx"]:hover {
+  color: white!important
+}
 
 .c1 {
   margin-right: 10px;
@@ -404,4 +410,8 @@ a:hover {
   width: fit-content;
   margin-top: 5px;
   font-size: 12px;
+}
+
+.input-name, .input-surname {
+  text-align: center;
 }
