@@ -368,7 +368,7 @@ function checkAmount(input_id, notice_id) {
   }
 }
 
-// 
+// Approssima i valori successivi al centesimo
 function roundToHundredth(value) {
   return Number.parseFloat(value).toFixed(2);
 }
