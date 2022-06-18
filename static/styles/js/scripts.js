@@ -1,4 +1,4 @@
-// Funzione per visualizzare le informazioni dell'utente
+// Visualizza le informazioni dell'utente
 function show() {
   var tb_left = document.getElementById("tb-left");
   var tb_right = document.getElementById("transactions-table");
@@ -6,7 +6,7 @@ function show() {
   tb_right.classList.remove("hide");
 }
 
-// Funzione per nascondere le informazioni dell'utente (quando vuote)
+// Nasconde le informazioni dell'utente
 function hide() {
   var tb_left = document.getElementById("tb-left");
   var tb_right = document.getElementById("transactions-table");
@@ -14,27 +14,27 @@ function hide() {
   tb_right.classList.add("hide");
 }
 
-// Funzione chiamata da populate() per distinguere la transazione
-// da un trasferimento, prelievo o versamento
-function checkTipologiaTX(tx) {
-  var input = document.getElementById("input-id").value;
+/* Funzione chiamata da populate() per distinguere la transazione da un trasferimento,
+ prelievo o versamento */
+function checkTXtype(tx) {
+  // var input = document.getElementById("input-id").value;
+  var sender = tx.sender;
   var receiver = tx.receiver;
-  var amount = tx.amount;
 
   if (receiver == "Withdrawal") {
     return "Withdrawal";
   }
-  if (input != receiver) {
+  if (sender != receiver) {
     return "Transfer";
   }
-  if (input == receiver && amount > 0) {
+  if (sender == receiver) {
     return "Deposit";
   }
 }
 
-// Funzione che, dato un array di transazioni e l'ID inserito dall'utente, inserisce
-// ogni transazione nella propria riga di tabella, omettendo il mittente e destinatario
-// quando l'ID inserito e l'ID della transazione sono uguali
+/* Dato un array di transazioni e l'ID inserito dall'utente, inserisce
+ ogni transazione nella propria riga di tabella, omettendo il mittente e destinatario
+ quando l'ID inserito e l'ID della transazione sono uguali */
 function populate(tx, input) {
   var table = document.getElementById("transactions-table");
 
@@ -57,7 +57,7 @@ function populate(tx, input) {
     x++;
 
     var tipologia = document.createElement("div");
-    temp = document.createTextNode("Type: " + checkTipologiaTX(tx[i]));
+    temp = document.createTextNode("Type: " + checkTXtype(tx[i]));
     tipologia.appendChild(temp);
     cellNode2.appendChild(tipologia);
     rowNode.appendChild(cellNode2);
@@ -68,7 +68,7 @@ function populate(tx, input) {
     cellNode2.appendChild(ammontare);
     rowNode.appendChild(cellNode2);
 
-    if (tx[i].receiver != input) {
+    if (tx[i].receiver != tx[i].sender) {
       if (!(tx[i].receiver == "Withdrawal")) {
         var destinatario = document.createElement("div");
         temp = document.createTextNode("Receiver: " + tx[i].receiver);
@@ -95,7 +95,7 @@ function populate(tx, input) {
   }
 }
 
-// Funzione che permette di recuperare dati da un sito dato l'URL
+// Recupera dati da un sito, dato l'URL
 function httpGet(url) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open("GET", url, false); // false for synchronous request
@@ -103,7 +103,7 @@ function httpGet(url) {
   return xmlHttp.responseText;
 }
 
-// Funzione che invia un array di tre dati (mittente, destinatario, ammontare) ad un url
+// Invia un array di tre dati (mittente, destinatario, ammontare) ad un url
 function httpPost(url, arr, type) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open("POST", url, true);
@@ -149,8 +149,8 @@ function httpPost(url, arr, type) {
   }
 }
 
+// Inserisce messaggi di successo o fallimento nella schermata di esito operazione
 function resultPOST(txt, result) {
-  // var flip_card = document.getElementById("flip-card");
   var alert = document.getElementById("alert");
   var title = document.getElementById("title");
   alert.innerHTML = txt;
@@ -160,30 +160,29 @@ function resultPOST(txt, result) {
     title.innerHTML = "Something went wrong! 🤔";
   }
   flipCard("flip-card");
-  // flip_card.classList.add("flip-card-flip");
 }
 
+// Effettua l'animazione della carta che ruota su se stessa di 180 gradi
 function flipCard(id) {
   var flip_card = document.getElementById(id);
   flip_card.classList.toggle("flip-card-flip");
 }
 
+// Resetta tutti gli input della pagina di Transfer
 function resetTransfer() {
-  var sender = document.getElementById("input-id-sender");
-  var receiver = document.getElementById("input-id-receiver");
-  var amount = document.getElementById("input-amount");
-  sender.value = "";
-  receiver.value = "";
-  amount.value = "";
+  document.getElementById("input-id-sender").value = "";
+  document.getElementById("input-id-receiver").value = "";
+  document.getElementById("input-amount").value = "";
 }
 
+// Resetta tutti gli input della pagina di Register
 function resetRegister() {
   document.getElementById("input-name").value = "";
   document.getElementById("input-surname").value = "";
 }
 
-// Chiamato dal pulsante "Cerca", utilizza l'ID inserito per ottenere tutti i dati del
-// rispettivo account e inserirli opportunamente nella pagina visibile all'utente
+/* Chiamato dal pulsante "Cerca", utilizza l'ID inserito per ottenere tutti i dati del
+rispettivo account e inserirli opportunamente nella pagina visibile all'utente */
 function getInput() {
   if (checkLength("input-id", "notice", "ID")) {
     reset();
@@ -253,8 +252,7 @@ function setEnter() {
   });
 }
 
-// Funzione che inserisce una data stringa di testo (l'errore) all'opportuno
-// elemento e lo mostra
+// Inserisce una data stringa di testo (l'errore) all'opportuno elemento e lo mostra
 function showNotice(notice, notice_id, color) {
   var notice_box = document.getElementById(notice_id);
   notice_box.innerHTML = notice;
@@ -278,14 +276,14 @@ function hideNotice(notice_id) {
   notice_box.classList.add("op0");
 }
 
-// Restituisce il nome del .html attualmente visualizzato
+// Restituisce il nome della pagina HTML attualmente visualizzata
 function getPageName() {
   var path = window.location.pathname;
   var page = path.split("/").pop();
   return page;
 }
 
-// Invia al sistema i dati mittente, destinatario e ammontare
+// Invia al sistema i dati mittente, destinatario e ammontare per effettuare un trasferimento
 function sendTransfer() {
   checkLength("input-id-sender", "error-sender", "ID");
   checkLength("input-id-receiver", "error-receiver", "ID");
@@ -304,6 +302,7 @@ function sendTransfer() {
   }
 }
 
+// Invia al sistema i dati nome e cognome per effettuare la registrazione di un account
 function sendRegister() {
   checkLength("input-name", "error-name", "name");
   checkLength("input-surname", "error-surname", "surname");
@@ -319,8 +318,7 @@ function sendRegister() {
   }
 }
 
-// Controlla che l'ID inserito sia lungo 20 caratteri, in caso contrario visualizza
-// un bordo rosso al textbox di input e mostra un avviso di errore
+// Controlla che l'ID inserito sia lungo 20 caratteri
 function checkLength(input_id, notice_id, type) {
   var input = document.getElementById(input_id);
   if (type == "ID") {
@@ -363,23 +361,14 @@ function checkAmount(input_id, notice_id) {
     return false;
   }
 
-  if (input.value == 0) {
-    input.classList.add("border-red");
-    showNotice("❗The amount can't be zero❗", notice_id, "red");
-    return false;
-  }
-  if (input.value < 0.01) {
-    input.classList.add("border-red");
-    showNotice("❗The amount must be higher than 0.01❗", notice_id, "red");
-    return false;
-  }
-  if (input.value > 0) {
+  if (input.value >= 0) {
     input.classList.remove("border-red");
     hideNotice(notice_id);
     return true;
   }
 }
 
+// Approssima i valori successivi al centesimo
 function roundToHundredth(value) {
   return Number.parseFloat(value).toFixed(2);
 }
