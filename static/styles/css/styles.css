@@ -7,15 +7,7 @@
 }
 
 :root {
-  --almost-white: hsl(0, 0%, 98%);
   --box-shadow: 0px 1px 90px -50px rgb(22, 22, 69);
-  --background-image: linear-gradient(hsl(273, 75%, 66%), hsl(240, 73%, 65%));
-  --background-image-lighter: linear-gradient(
-    rgb(191, 146, 228),
-    rgb(134, 134, 224)
-  );
-  --lightgrey: hsl(217, 12%, 63%);
-  --bs-link-hover-color: red;
 }
 
 textarea:focus,
@@ -81,7 +73,6 @@ body {
   justify-content: center;
   background-color: rgb(230, 239, 246);
   align-items: center;
-
   background: url("bg.jpeg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -102,7 +93,6 @@ body {
   flex-wrap: wrap;
   padding: 30px;
   flex-direction: column;
-
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(5px);
 }
@@ -134,7 +124,6 @@ body {
   border-bottom-right-radius: 0px;
   font-size: 16px;
   justify-content: center;
-  /* padding-bottom: 60px; */
   margin-bottom: 35px;
 }
 
@@ -143,7 +132,6 @@ body {
   align-items: center;
   width: 100%;
   height: 80%;
-  /* background-color: rgba(229, 229, 229, 0.451); */
   background-color: rgba(226, 226, 226, 0.45);
   border-radius: 20px;
   box-shadow: rgba(67, 67, 75, 0.2) 0px 7px 29px 0px;
@@ -163,6 +151,7 @@ body {
   font-size: 10px;
   padding: 20px;
 }
+
 .acc-row {
   width: 100%;
 }
@@ -171,7 +160,6 @@ button[type="submit"] {
   outline: none;
   border: none;
   border-radius: 10px;
-
   padding-left: 24px;
   padding-right: 24px;
   padding-top: 11px;
@@ -182,7 +170,6 @@ button[type="submit"] {
 input[name="input-id"] {
   border: none;
   width: 100%;
-  /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
   border-radius: 5px;
 }
 
@@ -204,7 +191,6 @@ th {
   margin-right: 20px !important;
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
-  /* border: 0.1px solid black; */
   border-color: rgba(142, 223, 253, 0.8);
   border: 0.5px rgba(142, 223, 253, 0.8);
   height: 40px;
@@ -261,7 +247,6 @@ td {
 .notice {
   justify-content: center;
   text-align: center;
-  /* color: red; */
   width: 100%;
 }
 
@@ -276,8 +261,6 @@ td {
 .op0 {
   opacity: 0;
 }
-
-/* transfer */
 
 .card-top-tr {
   height: fit-content;
@@ -361,7 +344,7 @@ td {
   -moz-user-select: none; /* Old versions of Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
+                        supported by Chrome, Edge, Opera and Firefox */
 }
 
 .credits {
@@ -372,8 +355,6 @@ td {
   padding-left: 20px;
   padding-right: 20px;
   font-size: 13px;
-
-  /* display: none; */
 }
 
 .c1,
@@ -383,19 +364,18 @@ td {
 
 a {
   color: rgb(60, 60, 60) !important;
-  /* color: rgb(165,219,235)!important; */
   text-decoration: none;
 }
 a:hover {
-  /* color: rgba(255, 255, 255, 0.654)!important; */
-  /* color: white!important */
   color: rgb(0, 105, 160) !important;
 }
-a[href="https://github.com/unimibYNGX"], a[href="https://github.com/washedDragonyx"] {
-  color: rgb(165,219,235)!important;
+a[href="https://github.com/unimibYNGX"], a[href="https://github.com/washedDragonyx"]
+{
+  color: rgb(165, 219, 235) !important;
 }
-a[href="https://github.com/unimibYNGX"]:hover, a[href="https://github.com/washedDragonyx"]:hover {
-  color: white!important
+a[href="https://github.com/unimibYNGX"]:hover, a[href="https://github.com/washedDragonyx"]:hover
+{
+  color: white !important;
 }
 
 .c1 {
@@ -412,6 +392,7 @@ a[href="https://github.com/unimibYNGX"]:hover, a[href="https://github.com/washed
   font-size: 12px;
 }
 
-.input-name, .input-surname {
+.input-name,
+.input-surname {
   text-align: center;
 }
