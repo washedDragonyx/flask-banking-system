@@ -209,7 +209,8 @@ th {
   display: flex;
   height: 100%;
   width: 80%;
-  overflow: scroll;
+  /* overflow: scroll; */
+  overflow: auto;
   justify-content: right;
   font-size: 12px;
 }
@@ -369,11 +370,11 @@ a {
 a:hover {
   color: rgb(0, 105, 160) !important;
 }
-a[href="https://github.com/unimibYNGX"], a[href="https://github.com/washedDragonyx"]
+a[href="https://github.com/yangxdev"], a[href="https://github.com/washedDragonyx"]
 {
   color: rgb(165, 219, 235) !important;
 }
-a[href="https://github.com/unimibYNGX"]:hover, a[href="https://github.com/washedDragonyx"]:hover
+a[href="https://github.com/yangxdev"]:hover, a[href="https://github.com/washedDragonyx"]:hover
 {
   color: white !important;
 }
